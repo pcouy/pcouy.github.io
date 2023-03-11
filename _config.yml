@@ -1,0 +1,8 @@
+plugins:
+  - jekyll-archives
+
+permalink: /:slugified_categories/:year/:month/:title:output_ext
+
+jekyll-archives:
+  enabled: all
+

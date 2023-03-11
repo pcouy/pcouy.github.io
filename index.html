@@ -1,0 +1,20 @@
+---
+layout: default
+title: Pierre Couy's personal page
+---
+
+<p>Welcome to my personal page. You will mostly find blog posts about work-related stuff, side projects, and resources related to computer science in general</p>
+
+<h2>About me</h2>
+
+I'm a freelance developper and computer science teacher.
+
+<h2>Posts</h2>
+
+<ul class="post-list">
+    {% for post in site.posts %}
+        <li>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+    {% endfor %}
+</ul>
