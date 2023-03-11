@@ -1,5 +1,6 @@
 plugins:
   - jekyll-archives
+  - jekyll-sitemap
 
 permalink: /:slugified_categories/:year/:month/:title:output_ext
 
