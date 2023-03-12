@@ -3,13 +3,14 @@ layout: post
 title:  "Using a Raspberry Pi to add a second HDMI port to a laptop"
 tags: raspberry-pi ffmpeg tutorial linux
 categories: [Side Projects]
+description: A step-by-step tutorial you can follow along
 ---
 
 Recently, I purchased a new laptop. I was really focused on spending the least amount of money and had not noticed that the laptop I chose was missing an essential feature : it did not have Display Port over USB C. Not being able to use my second external monitor on this new laptop felt like a huge downgrade from my previous one (which was able to output to both its HDMI and VGA ports simultaneously).
 
 ## Existing solutions and limitations of old Raspberry Pi models
 
-I quickly hooked a Raspberry Pi to the external monitor and tried to find a turnkey solution that would allow me to stream a virtual screen to the Pi via an ethernet cable. I looked into using VNC, Steam Remote Play, and some dedicated VNC wrappers I found on GitHub.
+I quickly hooked a Raspberry Pi to the external monitor and tried to find a turnkey solution that would allow me to stream a virtual screen to the Pi via an Ethernet cable. I looked into using VNC, Steam Remote Play, and some dedicated VNC wrappers I found on GitHub.
 
 Since I was not willing to spend more money on my setup, I used a Raspberry Pi 3 which was sitting unused in one of my drawers. This meant I could not benefit from hardware accelerated h264 decoding, which happened to be a significant limitation for using modern low-latency video streaming solutions. I had to compromise between picture quality, latency and framerate, and could never reach a balance I felt satisfied with : the slow LAN adapter and CPU could not handle my requirements.
 
@@ -44,13 +45,13 @@ Since I was already going to roll my own solution, I also listed some non essent
 
 I knew the hardest part was going to fine-tune the video pipeline between the laptop and the Pi. I wanted to tackle this first and only spend time on other features when I was sure it was worth it.
 
-I chose to encode and send the stream using [`ffmpeg`](https://ffmpeg.org/) on my laptop (which is known to be the swiss-army knife of audio and video manipulation). It takes care of screen-grabbing, video encoding, encapsulation and networking and provides fine-grained controls over all steps. Its numerous options can often feel overwhelming, but digging the docs have never let me down.
+I chose to encode and send the stream using [`ffmpeg`](https://ffmpeg.org/) on my laptop (which is known to be the Swiss-army knife of audio and video manipulation). It takes care of screen-grabbing, video encoding, encapsulation and networking and provides fine-grained controls over all steps. Its numerous options can often feel overwhelming, but digging the docs have never let me down.
 
-For the receiving end, I considered several ffmpeg-compatible video players with Direct Rendering Manager support, including `mpv`, `vlc`, and `ffplay` (more on that topic later).
+For the receiving end, I considered several `ffmpeg`-compatible video players with Direct Rendering Manager support, including `mpv`, `vlc`, and `ffplay` (more on that topic later).
 
 ### Raspberry Pi initial setup
 
-I started whith a fresh Raspberry Pi OS install, which I flashed on my SD card using the usual commands :
+I started with a fresh Raspberry Pi OS install, which I flashed on my SD card using the usual commands :
 
 {% highlight console %}
 pierre@laptop:~ $ lsblk -f # Identify SD card block device
@@ -69,7 +70,7 @@ pi@raspberrypi:~ $ sudo apt-get update && sudo apt-get install mpv ffmpeg
 pierre@laptop:~ $ sudo apt-get update && sudo apt-get install ffmpeg
 {% endhighlight %}
 
-While waiting for the players to install, I found an ethernet cable to use between the Pi and the laptop. To my surprise, both computers seemed to be able to talk to each other without me doing anything, so I started tinkering with ffmpeg parameters. I don't remember the details, but the connection ended up not being stable enough. It was necessary to install and configure a DHCP server on the Raspberry Pi in order to comfortably experiment.
+While waiting for the players to install, I found an Ethernet cable to use between the Pi and the laptop. To my surprise, both computers seemed to be able to talk to each other without me doing anything, so I started tinkering with `ffmpeg` parameters. I don't remember the details, but the connection ended up not being stable enough. It was necessary to install and configure a DHCP server on the Raspberry Pi in order to comfortably experiment.
 
 {% highlight console %}
 pi@raspberrypi:~ $ sudo apt-get install udhcpd
@@ -102,13 +103,13 @@ pi@rapsberrypi:~ $ sudo systemctl enable udhcpd
 pi@rapsberrypi:~ $ sudo systemctl start udhcpd
 {% endhighlight %}
 
-The first command above will launch the DHCP server on boot, and the second one will launch it immediately. Rebooting the Pi may help both computers pick up on their new network configurations. From now on, the Raspberry Pi will be reachable from the laptop using `10.0.0.0` as long as the ethernet cable is plugged to both. The laptop will use the IP `10.0.0.1`.
+The first command above will launch the DHCP server on boot, and the second one will launch it immediately. Rebooting the Pi may help both computers pick up on their new network configurations. From now on, the Raspberry Pi will be reachable from the laptop using `10.0.0.0` as long as the Ethernet cable is plugged to both. The laptop will use the IP `10.0.0.1`.
 
 ### Starting an unoptimized stream
 
 With this initial setup done, I was able to quickly iterate over commands for sending and receiving the stream. This was not a straightforward process and while I did not keep records of every attempt, I'll do my best to tell the interesting discoveries I made along the way. I will also detail every option in the commands presented below.
 
-On the Raspberry Pi, the goal was to lauch a media player that would listen on the network waiting for the laptop to send it a stream, and display it using DRM with the lowest possible latency. I first tried using [`mpv`](https://mpv.io/) because of its support for GPU decoding.
+On the Raspberry Pi, the goal was to launch a media player that would listen on the network waiting for the laptop to send it a stream, and display it using DRM with the lowest possible latency. I first tried using [`mpv`](https://mpv.io/) because of its support for GPU decoding.
 
 Since both ends of the stream were connected over a single wire with no realistic opportunity for interception and I wanted to save resources on the Pi, encryption was not necessary. My requirements for lowest possible latency led my to try streaming over plain UDP. Long story short, my experiments with UDP did not go so well : one skipped packet and the whole screen would turn to garbage (or worse, the player would crash). I then switched to TCP, which proved to offer low-enough latency while not suffering from the same issue.
 
@@ -118,7 +119,7 @@ Let's start with the most basic command that does that, without bothering with o
 pi@raspberrypi:~ $ mpv --hwdec=drm "tcp://10.0.0.0:1234?listen"
 {% endhighlight %}
 
-This command makes mpv listen on interface `10.0.0.0`, TCP port `1234` and will display the received stream using DRM.
+This command makes `mpv` listen on interface `10.0.0.0`, TCP port `1234` and will display the received stream using DRM.
 
 On the sending side, I started with a simple command to test the stream :
 
@@ -136,10 +137,10 @@ Let's detail the arguments used here :
 
 - `-video_size 1920x1080` indicates the size of the region to grab.
 - `-framerate 5` only grabs 5 frames per second. This is below our requirement but this allows somewhat smooth testing of the setup before optimization.
-- [`-f x11grab`](https://ffmpeg.org/ffmpeg-devices.html#x11grab) : used as an input file option, `-f` specifies the input devie. `x11grab` is used for screen grabbing. 
+- [`-f x11grab`](https://ffmpeg.org/ffmpeg-devices.html#x11grab) : used as an input file option, `-f` specifies the input device. `x11grab` is used for screen grabbing. 
 - `-i :0.0+0x0` : `-i` is usually used for specifying input file. When used with the X11 video input device, specifies where to grab from in the syntax : `[hostname]:display_number.screen_number[+x_offset,y_offset]`
 - [`-f mpegts`](https://ffmpeg.org/ffmpeg-formats.html#mpegts) : used as an output file option, `-f` specifies the output container (also called file format or muxer). `mpegts` designates MPEG-2 transport stream.
-- `tcp://10.0.0.0:1234` is the URL to send the stream to (the mpv listener running on the Pi)
+- `tcp://10.0.0.0:1234` is the URL to send the stream to (the `mpv` listener running on the Pi)
 
 This did not meet any of my performance and quality requirements, but provided me with a starting point I could optimize from.
 
@@ -162,7 +163,7 @@ While this achieved the best latency I could reach using `mpv` and the basic `ff
 pi@raspberrypi:~ $ ffplay -autoexit -flags low_delay -framedrop -strict experimental -vf setpts=0 -tcp_nodelay 1 "tcp://10.0.0.0:1234\?listen"
 {% endhighlight %}
 
-Most of these optimizations came from [this stackoverflow post about minimizing delay in a live stream](https://stackoverflow.com/questions/16658873/how-to-minimize-the-delay-in-a-live-streaming-with-ffmpeg). Let's detail the meaning of the options I used :
+Most of these optimizations came from [this StackOverflow post about minimizing delay in a live stream](https://stackoverflow.com/questions/16658873/how-to-minimize-the-delay-in-a-live-streaming-with-ffmpeg). Let's detail the meaning of the options I used :
 
 - `-autoexit` makes `ffplay` exit when the stream ends
 - [`-flags low_delay`](https://ffmpeg.org/ffplay-all.html#Codec-Options) seemed like an obvious choice, even if the documentation is not clear about what it does
@@ -183,7 +184,7 @@ pi@raspberrypi:~ $ sudo nice -n -20 ionice -c 1 -n 0 ffplay -autoexit -flags low
 
 Since the player automatically detects, decodes and demuxes the input codec and muxer, I could experiment with the sending side without changing the command run on the Pi. However, I still had to switch between terminals in order to manually restart `ffplay` between each try. This pushed me to take care of a non-essential feature before going on.
 
-I used [`supervisor`](http://supervisord.org/) to manage the media player process. The choice was motivated by its ease of use over creating systemd services.
+I used [`supervisor`](http://supervisord.org/) to manage the media player process. The choice was motivated by its ease of use over creating `systemd` services.
 
 {% highlight console %}
 pi@raspberrypi:~ $ sudo apt-get install supervisor
@@ -200,13 +201,13 @@ stdout_logfile=/dev/null
 stderr_logfile=/dev/null
 {% endhighlight %}
 
-The "autorestart" option makes a new instance of ffplay listen and wait for a new stream when the previous one exits. I used `/dev/null` for logfiles to prevent `ffplay`'s verbose output from filling my small SD card with log files.
+The `autorestart` option makes a new instance of `ffplay` listen and wait for a new stream when the previous one exits. I used `/dev/null` for logfiles to prevent `ffplay`'s verbose output from filling my small SD card with log files.
 
 After starting the `supervisor` daemon with `sudo systemctl enable supervisor` and `sudo systemctl start supervisor`, I could try `ffmpeg` option combinations much quicker.
 
 ### Fine-tuning the encoder process
 
-The first thing I did was increase the framerate to 30 FPS, and I was really surprised to find ouy this helped a lot with latency. The encoder would still occasionally fall behind, which caused latency spikes, but the with that simple change it suddenly started to feel like I was on the right track.
+The first thing I did was increase the framerate to 30 FPS, and I was really surprised to find out this helped a lot with latency. The encoder would still occasionally fall behind, which caused latency spikes, but the with that simple change it suddenly started to feel like I was on the right track.
 
 I then tried switching from the default `mpeg2video` to the more modern `mpeg4` which did not lead to any improvement in itself, but provided more options. Switching the muxer from `mpegts` to `nut` led to more noticeable improvements regarding delay. While quality was still too low, it started to feel responsive enough to meet the latency requirement.
 
@@ -218,7 +219,7 @@ At this point, I was back to square one, trying to find the balance between qual
 - Framedrops from `ffplay` seemed to happen at a very stable rate.
 - The Raspberry Pi did not seem to be limited by its CPU.
 
-This hinted to me that the problem came from the network, so I launched a network capture using tcpdump :
+This hinted to me that the problem came from the network, so I launched a network capture using `tcpdump` :
 
 {% highlight console %}
 pierre@laptop:~ $ sudo tcpdump -i eth0 -c 2000 -w diag_remote_screen.pcapng "port 1234"
@@ -230,7 +231,7 @@ This captures 2000 packets of the stream between `ffmpeg` running on the laptop 
 The command above shows :
 
 - The time at which the packet was captured
-- The TCP sequence number for packets from the laptop to the Pi and their acknowledgements
+- The TCP sequence number for packets from the laptop to the Pi and their acknowledgments
 - The size of packets
 
 Here is a sample of its output :
@@ -300,9 +301,9 @@ Here is a sample of its output :
 14:13:37.243176 ack 774010, 0
 {% endhighlight %}
 
-At first, we see the laptop sends a packet that weights a couple kB approximately every 0.035s, which matches our framerate of 30fps. The Pi sends the acknowledgements for these packets before the next one comes in. At `14:13:37.121258`, ffmpeg starts sending a lot of 16kb packets to the Pi and the acknowledgement numbers start falling behind. When the Pi gets too far behind, ffmpeg waits for ACKs to catch-up a little before sending more data (TCP sequence numbers `283906-769413`). This burst of data from the laptop stops at `14:13:37.169857` and the Pi TCP stack finally catches up at `14:13:37.179345`. This is `0.58s` (almost 2 frames) after the laptop began sending this data. This whole thing happened precisely every 12 frames and explained the details I noticed earlier about the framedrops.
+At first, we see the laptop sends a packet that weights a couple kB approximately every 0.035s, which matches our framerate of 30fps. The Pi sends the acknowledgments for these packets before the next one comes in. At `14:13:37.121258`, `ffmpeg` starts sending a lot of 16kB packets to the Pi and the acknowledgment numbers start falling behind. When the Pi gets too far behind, `ffmpeg` waits for ACKs to catch-up a little before sending more data (TCP sequence numbers `283906-769413`). This burst of data from the laptop stops at `14:13:37.169857` and the Pi TCP stack finally catches up at `14:13:37.179345`. This is `0.58s` (almost 2 frames) after the laptop began sending this data. This whole thing happened precisely every 12 frames and explained the details I noticed earlier about the framedrops.
 
-The mpeg codec compresses videos by only saving a few frames in full. These are called keyframes. All other frames are derived from the frame that comes before associated with a description of the differences between consecutive frames. The data bursts happened everytime ffmpeg sent a keyframe, which by default was every 12 frame (~ 3 times/sec).
+The mpeg codec compresses videos by only saving a few frames in full. These are called keyframes. All other frames are derived from the frame that comes before associated with a description of the differences between consecutive frames. The data bursts happened every time `ffmpeg` sent a keyframe, which by default was every 12 frame (~ 3 times/sec).
 
 Increasing the "group of picture" [codec option](https://ffmpeg.org/ffmpeg-codecs.html#Codec-Options) from 12 to 100 (~ once every 3 seconds) had the expected effect : framedrops were only happening once every 3 seconds, which I could live with.
 
@@ -328,7 +329,7 @@ pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -r 30 -framerate 30 -f x11grab -i
 For this part, I intended to configure the X server on my laptop to be able to output to a virtual monitor, which I could then screen-grab and stream to the Raspberry Pi.
 I closely followed what [`virtual-display-linux`](https://github.com/dianariyanto/virtual-display-linux) does. I copied the [provided configuration file for intel GPU](https://github.com/dianariyanto/virtual-display-linux/blob/master/20-intel.conf). After rebooting, I could indeed see two monitors called `VIRTUAL1` and `VIRTUAL2` in my `xrandr` output.
 
-Using the accepted answer from [this stackoverflow thread](https://unix.stackexchange.com/questions/227876/how-to-set-custom-resolution-using-xrandr-when-the-resolution-is-not-available-i) I created the mode for my external monitor resolution and associated it with the first virtual display :
+Using the accepted answer from [this StackOverflow thread](https://unix.stackexchange.com/questions/227876/how-to-set-custom-resolution-using-xrandr-when-the-resolution-is-not-available-i) I created the mode for my external monitor resolution and associated it with the first virtual display :
 
 {% highlight console %}
 pierre@laptop:~ $ gtf 1920 1200 30 # gtf {W} {H} {FPS}
@@ -339,7 +340,7 @@ pierre@laptop:~ $ xrandr --addmode VIRTUAL1 "1920x1200_30.00"
 
 Note that I used a resolution of 1920x1200 because this is the resolution of the monitor I'm using. If you are following along, you will need to change this to fit your actual screen resolution.
 
-After enabling the virtual monitor using `arandr` (a graphical frontend for `xrandr`), I modified the `-video_size` and `-i` options in my ffmpeg command to grab the virtual display. This worked as intended and it effectively extended my laptop's display to the Pi-drived monitor.
+After enabling the virtual monitor using `arandr` (a graphical frontend for `xrandr`), I modified the `-video_size` and `-i` options in my `ffmpeg` command to grab the virtual display. This worked as intended and it effectively extended my laptop's display to the Pi-driven monitor.
 
 ### Wrapping `xrandr`
 
@@ -353,14 +354,14 @@ The solution I came up with feels a bit hacky : I wrote a wrapper script for `xr
 # Enable job control
 set -m
 
-# Extract arguments between `--output VIRTUAL1` and the next occurence of `--output`
+# Extract arguments between `--output VIRTUAL1` and the next occurrence of `--output`
 V_ARGS=$(echo "$@" | grep "VIRTUAL1" | sed -e 's/.*--output VIRTUAL1 //' -e 's/ \?--output.*//')
 
 # Run the real xrandr
 # (using full path YOU MAY NEED TO UPDATE THIS DEPENDING ON YOUR DISTRO)
 /usr/bin/xrandr "$@"
 
-# If xrandr exited with an error, exit with the same exit code
+# If there were no args related to VIRTUAL1, exit with the same exit code as `xrandr`
 EXITCODE=$?
 if [ $(echo $V_ARGS | wc -w) -eq 0 ]; then
     exit $EXITCODE
@@ -436,7 +437,7 @@ You can recognize the `ffmpeg` command from earlier. There are however a few dif
 
 - The `-video_size` and `-i` options are determined from the `xrandr` invocation
 - Depending on the screen orientation, we use a [video filter](https://ffmpeg.org/ffmpeg-filters.html#transpose-1) to rotate the stream
-- ffmpeg is invoked through [`taskset`](https://manpages.ubuntu.com/manpages/trusty/fr/man1/taskset.1.html)
+- `ffmpeg` is invoked through [`taskset`](https://manpages.ubuntu.com/manpages/trusty/fr/man1/taskset.1.html)
 
 I saved this script as `~/.local/bin/xrandr`. For this to work, you need to have your `~/.local/bin` directory in your path, with a higher priority than system-wide directories. This is achieved by adding the following line in your `~/.bashrc` (or whatever rc file your shell uses) :
 
@@ -444,13 +445,13 @@ I saved this script as `~/.local/bin/xrandr`. For this to work, you need to have
 export PATH="$HOME/.local/bin:$PATH"
 {% endhighlight %}
 
-This wrapper script is run everytime I run a `xrandr` command, including from GUI frontends such as `arandr`. It manages the `ffmpeg` process and starts the stream whenever the `VIRTUAL1` display is enabled. It even manages screen orientation, which was essential to me since I actually use this monitor in portrait orientation.
+This wrapper script is run every time I run a `xrandr` command, including from GUI frontends such as `arandr`. It manages the `ffmpeg` process and starts the stream whenever the `VIRTUAL1` display is enabled. It even manages screen orientation, which was essential to me since I actually use this monitor in portrait orientation.
 
 ### Managing power
 
 After writing the wrapper script, I was really happy with the result. I even got the pleasant surprise of not having to handle resuming the stream after the laptop wakes up from sleep. Since `ffmpeg` was not exiting on sleep, `ffplay` silently waited for the laptop to start sending data again. There was one thing bothering me though : I still had to manually power the monitor on and off when leaving my desk.
 
-I googled for how to turn the HDMI port of the Raspberry Pi on and off, and quickly found out about the [`vcgencmd`](https://elinux.org/RPI_vcgencmd_usage) command and its `display_power` subcommand. Unfortunately, every command I tried seemed to have no effect on the Raspberry Pi 3. It took me a few days to [find a fix](https://forum.magicmirror.builders/topic/16865/mmm-remotecontrol-or-vcgencmd-issue) : by editing the `/boot/config.txt` to replace `dtoverlay=vc4-kms-v3d` with `dtoverlay=vc4-fkms-v3d` and rebooting the Pi, it worked. It seems like the "kms" driver has a bug on the Raspberry Pi 3. Fortunately, switching VideoCore drivers did not impact the stream decoding performance. With that issue fixed, I was able to turn the screen on and off from an SSH session.
+I googled for how to turn the HDMI port of the Raspberry Pi on and off, and quickly found out about the [`vcgencmd`](https://elinux.org/RPI_vcgencmd_usage) command and its `display_power` subcommand. Unfortunately, every command I tried seemed to have no effect on the Raspberry Pi 3. It took me a few days to [find a fix](https://forum.magicmirror.builders/topic/16865/mmm-remotecontrol-or-vcgencmd-issue) : by editing the `/boot/config.txt` to replace `dtoverlay=vc4-kms-v3d` with `dtoverlay=vc4-fkms-v3d` and rebooting the Pi, it worked. It seems like the `kms` driver has a bug on the Raspberry Pi 3. Fortunately, switching VideoCore drivers did not impact the stream decoding performance. With that issue fixed, I was able to turn the screen on and off from an SSH session.
 
 In order to run the right commands, I once again went the hacky way and came up with a short script :
 

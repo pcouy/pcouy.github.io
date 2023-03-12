@@ -1,8 +1,13 @@
 plugins:
   - jekyll-archives
   - jekyll-sitemap
+  - jekyll-seo-tag
 
 permalink: /:slugified_categories/:year/:month/:title:output_ext
+  
+title: Pierre Couy's personnal page
+author: Pierre Couy
+description: Freelance developper, computer science teacher, passionate about programming. I enjoy sharing my work with the world.
 
 jekyll-archives:
   enabled: all
