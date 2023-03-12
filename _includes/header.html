@@ -1,14 +1,12 @@
 <nav>
     {% for item in site.data.navigation %}
         <a href="{{ item.link }}" {% if page.url == item.link %}class="active"{% endif %}>
-            {{ item.name }}
-        </a>
+            {{ item.name }}</a>
     {% endfor %}
     {% for category in site.categories %}
         {% assign slug = category[0] | slugify %}
         {% assign link = "/category/" | append: slug | append: "/" %}
         <a href="{{ link }}" {% if page.url == link %}class="active"{% endif %}>
-            {{ category[0] }}
-        </a>
+            {{ category[0] }}</a>
     {% endfor %}
 </nav>
