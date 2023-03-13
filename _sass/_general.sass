@@ -5,8 +5,8 @@ body
   line-height: 1.3
   font-size: 1.2em
 
-h1, h2, h3
-  color: $color2
+h1, h2, h3, h4
+  color: $yellow
 
 a
   color: $color2
@@ -16,6 +16,9 @@ a:hover
 
 nav a
   margin: 5px
+  color: $blue
+  &:hover
+    color: $cyan
   &.active
     color: $color1-alt
 
@@ -25,6 +28,7 @@ nav a
 
 figure.highlight
   margin: 15px
+  padding: 0px 5px
   pre
     font-size: 0.85em
     overflow-x: auto
