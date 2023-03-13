@@ -100,7 +100,7 @@ You will need to replace `[PI MAC ADDRESS]` with the actual MAC address of your 
 
 {% highlight console %}
 pi@rapsberrypi:~ $ sudo systemctl enable udhcpd
-pi@rapsberrypi:~ $ sudo systemctl start udhcpd
+pi@rapsberrypi:~ $ sudo systemctl restart udhcpd
 {% endhighlight %}
 
 The first command above will launch the DHCP server on boot, and the second one will launch it immediately. Rebooting the Pi may help both computers pick up on their new network configurations. From now on, the Raspberry Pi will be reachable from the laptop using `10.0.0.0` as long as the Ethernet cable is plugged to both. The laptop will use the IP `10.0.0.1`.
@@ -203,7 +203,7 @@ stderr_logfile=/dev/null
 
 The `autorestart` option makes a new instance of `ffplay` listen and wait for a new stream when the previous one exits. I used `/dev/null` for logfiles to prevent `ffplay`'s verbose output from filling my small SD card with log files.
 
-After starting the `supervisor` daemon with `sudo systemctl enable supervisor` and `sudo systemctl start supervisor`, I could try `ffmpeg` option combinations much quicker.
+After starting the `supervisor` daemon with `sudo systemctl enable supervisor` and `sudo systemctl restart supervisor`, I could try `ffmpeg` option combinations much quicker.
 
 ### Fine-tuning the encoder process
 
