@@ -8,11 +8,13 @@ description: A step-by-step tutorial you can follow along
 
 Recently, I purchased a new laptop. I was really focused on spending the least amount of money and had not noticed that the laptop I chose was missing an essential feature : it did not have Display Port over USB C. Not being able to use my second external monitor on this new laptop felt like a huge downgrade from my previous one (which was able to output to both its HDMI and VGA ports simultaneously).
 
+This is the story of how I managed to overcome this limitation by rolling my own virtual screen streaming solution using a Raspberry Pi. I tried to write it in a way you can follow along if you want to reproduce it. If you are just looking to get it up and running as quick as possible, you can check out [the GitHub repository containing configuration files and installation scripts](https://github.com/pcouy/rpi-eth-display) (Work In Progress)
+
 ## Existing solutions and limitations of old Raspberry Pi models
 
 I quickly hooked a Raspberry Pi to the external monitor and tried to find a turnkey solution that would allow me to stream a virtual screen to the Pi via an Ethernet cable. I looked into using VNC, Steam Remote Play, and some dedicated VNC wrappers I found on GitHub.
 
-Since I was not willing to spend more money on my setup, I used a Raspberry Pi 3 which was sitting unused in one of my drawers. This meant I could not benefit from hardware accelerated h264 decoding, which happened to be a significant limitation for using modern low-latency video streaming solutions. I had to compromise between picture quality, latency and framerate, and could never reach a balance I felt satisfied with : the slow LAN adapter and CPU could not handle my requirements.
+Since I was not willing to spend more money on my setup, I used a Raspberry Pi 3 which was sitting unused in one of my drawers. This meant I could not benefit from hardware accelerated h264 decoding, which happened to be a significant limitation for using modern low-latency video streaming solutions. I had to compromise between picture quality, latency and framerate, and could never reach a balance I felt satisfied with : the slow LAN port and CPU could not handle my requirements.
 
 I also did not like the fact that most of these solutions depended on running a full desktop session on the Pi, which I wanted to avoid in order to save its thin resources.
 
@@ -25,6 +27,7 @@ My main requirements were the following :
 - The latency should not be noticeable when scrolling or moving the mouse
 - The picture quality should be high enough to read small text
 - Since I planned to mainly use it for static text content, I decided to go easy on myself by setting a low target of 10 FPS.
+- If the receiving end of the stream ever gets behind, it should catch-up to live as quick as possible
 - Use [Direct Rendering Manager](https://en.wikipedia.org/wiki/Direct_Rendering_Manager) to display the stream on the Pi instead of depending on a X server.
 - I looked into remote-play tools and VNC because they seemed like easy to use low-latency solutions. However, I was not interested with streaming inputs back from the Pi to the laptop.
 
@@ -213,7 +216,9 @@ I then tried switching from the default `mpeg2video` to the more modern `mpeg4` 
 
 I then managed to increase the quality to my standards by using encoder options to target a higher bit-rate (`-b:v 40M -maxrate 50M -bufsize 200M`). However, the Raspberry Pi became overloaded and started to drop a couple of frames a few times per seconds. This led to an unpleasant experience, with the mouse movements and scrolling not feeling smooth. What surprised me the most was seeing frames being dropped even when displaying a still screen.
 
-At this point, I was back to square one, trying to find the balance between quality and framerate. One key difference, however, was that this time I was working with tools that provided with more than enough options. After trying a few things that did not work, I noticed a few things : 
+#### Hunting down the framedrops
+
+At this point, I was back to square one, trying to find the balance between picture quality and smoothness. One key difference, however, was that this time I was working with tools I was somewhat familiar with, and provided lots of options. After trying a few things that did not work, I noticed a few things : 
 
 - `ffmpeg` was sending a stream with a bitrate of several Mbit/s for a still screen.
 - Framedrops from `ffplay` seemed to happen at a very stable rate.
@@ -301,16 +306,20 @@ Here is a sample of its output :
 14:13:37.243176 ack 774010, 0
 {% endhighlight %}
 
-At first, we see the laptop sends a packet that weights a couple kB approximately every 0.035s, which matches our framerate of 30fps. The Pi sends the acknowledgments for these packets before the next one comes in. At `14:13:37.121258`, `ffmpeg` starts sending a lot of 16kB packets to the Pi and the acknowledgment numbers start falling behind. When the Pi gets too far behind, `ffmpeg` waits for ACKs to catch-up a little before sending more data (TCP sequence numbers `283906-769413`). This burst of data from the laptop stops at `14:13:37.169857` and the Pi TCP stack finally catches up at `14:13:37.179345`. This is `0.58s` (almost 2 frames) after the laptop began sending this data. This whole thing happened precisely every 12 frames and explained the details I noticed earlier about the framedrops.
+At first, we see the laptop sends a packet that weights a couple kB approximately every 0.033s, which matches our framerate of 30fps. The Pi sends the acknowledgments for each of these packets before the next one comes in. At `14:13:37.121258`, `ffmpeg` starts sending a lot of 16kB packets to the Pi and the acknowledgment numbers start falling behind. When the Pi gets too far behind, `ffmpeg` waits for ACKs to catch-up a little before sending more data (TCP sequence numbers `283906-769413`). This burst of data from the laptop stops at `14:13:37.169857` (TCP seq num `769413`) and the Pi TCP stack finally catches up at `14:13:37.179345` (TCP ack `769413`). This is `0.58s` (almost 2 frames) after the laptop began sending this data. This whole thing happened precisely every 12 frames and explained the details I noticed earlier about the framedrops.
 
-The mpeg codec compresses videos by only saving a few frames in full. These are called keyframes. All other frames are derived from the frame that comes before associated with a description of the differences between consecutive frames. The data bursts happened every time `ffmpeg` sent a keyframe, which by default was every 12 frame (~ 3 times/sec).
+The MPEG codec compresses videos by only saving a few frames in full, which are called keyframes. All other frames are derived from the previous frame which is associated with a description of the differences between consecutive frames. Data bursts occur every-time `ffmpeg` sends a keyframe, which is set by default to happen every 12 frame (~ 3 times/sec).
 
 Increasing the "group of picture" [codec option](https://ffmpeg.org/ffmpeg-codecs.html#Codec-Options) from 12 to 100 (~ once every 3 seconds) had the expected effect : framedrops were only happening once every 3 seconds, which I could live with.
 
 At this point I had the following command :
 
 {% highlight console %}
-pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0+0x0 -b:v 40M -maxrate 50M -bufsize 200M -vcodec mpeg4 -g 100 -f nut "tcp://10.0.0.0:1234"
+pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -framerate 30 \
+    -f x11grab -i :0.0+0x0 \
+    -b:v 40M -maxrate 50M -bufsize 200M \
+    -vcodec mpeg4 -g 100 -f nut \
+    "tcp://10.0.0.0:1234"
 {% endhighlight %}
 
 Even though I was satisfied with what I managed to get, I kept tinkering with options. At one point, it became difficult to tell what actually improved the experience and what could be attributed to some kind of placebo effect. Anyway, here is the final command I came up with :
@@ -326,8 +335,8 @@ pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -r 30 -framerate 30 -f x11grab -i
 
 ### Extending the laptop display
 
-For this part, I intended to configure the X server on my laptop to be able to output to a virtual monitor, which I could then screen-grab and stream to the Raspberry Pi.
-I closely followed what [`virtual-display-linux`](https://github.com/dianariyanto/virtual-display-linux) does. I copied the [provided configuration file for intel GPU](https://github.com/dianariyanto/virtual-display-linux/blob/master/20-intel.conf). After rebooting, I could indeed see two monitors called `VIRTUAL1` and `VIRTUAL2` in my `xrandr` output.
+For this task, my goal was to configure the X server on my laptop so that it could output to a virtual monitor I could then screen-grab and stream to the Raspberry Pi.
+To accomplish this, I closely followed what [`virtual-display-linux`](https://github.com/dianariyanto/virtual-display-linux) does and I copied the [provided configuration file for intel GPU](https://github.com/dianariyanto/virtual-display-linux/blob/master/20-intel.conf). After rebooting, I could indeed see two monitors called `VIRTUAL1` and `VIRTUAL2` in my `xrandr` output.
 
 Using the accepted answer from [this StackOverflow thread](https://unix.stackexchange.com/questions/227876/how-to-set-custom-resolution-using-xrandr-when-the-resolution-is-not-available-i) I created the mode for my external monitor resolution and associated it with the first virtual display :
 
@@ -453,7 +462,7 @@ After writing the wrapper script, I was really happy with the result. I even got
 
 I googled for how to turn the HDMI port of the Raspberry Pi on and off, and quickly found out about the [`vcgencmd`](https://elinux.org/RPI_vcgencmd_usage) command and its `display_power` subcommand. Unfortunately, every command I tried seemed to have no effect on the Raspberry Pi 3. It took me a few days to [find a fix](https://forum.magicmirror.builders/topic/16865/mmm-remotecontrol-or-vcgencmd-issue) : by editing the `/boot/config.txt` to replace `dtoverlay=vc4-kms-v3d` with `dtoverlay=vc4-fkms-v3d` and rebooting the Pi, it worked. It seems like the `kms` driver has a bug on the Raspberry Pi 3. Fortunately, switching VideoCore drivers did not impact the stream decoding performance. With that issue fixed, I was able to turn the screen on and off from an SSH session.
 
-In order to run the right commands, I once again went the hacky way and came up with a short script :
+In order to run the `vcgencmd` commands at the right time, I once again went the hacky way and came up with a short script (featuring a dirty infinite loop) :
 
 {% highlight bash %}
 #!/bin/bash
@@ -467,7 +476,7 @@ while true; do
 done
 {% endhighlight %}
 
-This is a dirty infinite loop which does the following : 
+The loop does the following : 
 
 - Run `tcpdump` for two seconds and count the number of packets received on port 1234 during this time
 - If there was at least one packet received during the last 2 seconds, turn the display on
@@ -490,6 +499,8 @@ I finally reached a solution I could use in my day-to-day life, with only small 
 
 I still have to manually create the new mode and add it to the virtual display after every reboot. It would be really nice to have the Pi detect the resolution of the monitor and use it to automatically configure the virtual display on the laptop. However, since I'm of the kind who rarely reboots their computers and I already spent quite some time on this project, I moved on from it without taking care of this part.
 
-I would also like to turn this whole project into a git repository with scripts and configuration files to go from a fresh Raspberry Pi OS install to the setup presented here. If there's interest, I might even take the time to make a ready-to-flash SD image to make the process as painless as possible.
+The main defect is that I sometimes get visible encoding/decoding glitches that fix themselves on the next keyframe. I don't know what causes them. If you have leads on this, please open an issue in the GitHub repository.
 
-Overall, I am really satisfied with what I managed to come up with.
+I made a [GitHub repository that features all needed configuration files and scripts, as well as untested installation scripts](https://github.com/pcouy/rpi-eth-display). The part that runs on the Raspberry Pi seems like a good opportunity to learn how to make a `.deb` package, so I may look into it in the future. If there is interest around this project, I may get motivated to make the process more streamlined and beginner-friendly.
+
+Overall, I am really satisfied with what I managed to come up with. While using it, I even noticed I was able to watch videos without the audio-video delay being noticeable. With this solution available, and considering the money it saved me, I may knowingly purchase a laptop that lacks a second video output when I need to replace this one.
