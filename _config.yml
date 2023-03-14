@@ -5,6 +5,7 @@ plugins:
 
 permalink: /:slugified_categories/:year/:month/:title:output_ext
   
+url: https://pierre-couy.dev
 title: Pierre Couy's tech corner
 author: Pierre Couy
 description: Freelance developper, computer science teacher, passionate about programming. I enjoy sharing my work with the world.
