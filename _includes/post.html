@@ -1,3 +1,19 @@
 <li>
-    <a href="{{ include.post.url }}">{{ include.post.title }}</a>
+    <h3><a href="{{ include.post.url }}">{{ include.post.title }}</a></h3>
+    <div class="post-details">
+        {{ include.post.date | date_to_string }} 
+        {% if include.post.categories.size > 0 %}
+            in
+                {{ include.post.categories | join: ", " }}
+        {% endif %}
+        .
+        {% if include.post.tags.size > 0 %}
+            Tags :
+                {% for tag in include.post.tags %}
+                    <a href="/tag/{{ tag }}/">{{ tag }}</a>
+                    {% if forloop.rindex0 > 0 %},{% endif %}
+                {% endfor %}
+        {% endif %}
+    </div>
+    {{ post.excerpt }}
 </li>

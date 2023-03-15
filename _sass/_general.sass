@@ -33,6 +33,13 @@ figure.highlight
     font-size: 0.85em
     overflow-x: auto
 
+ul.post-list
+  list-style: none
+  &>li
+    border-bottom: 1px solid $base0
+    &>h3,&>.post-details
+      margin: 5px
+
 @media (max-width: 768px)
   .site-container
     width: 95vw
