@@ -9,8 +9,6 @@ title: Pierre Couy's tech corner
 
 <ul class="post-list">
     {% for post in site.posts %}
-        <li>
-            <a href="{{ post.url }}">{{ post.title }}</a>
-        </li>
+        {% include post.html post=post %}
     {% endfor %}
 </ul>
