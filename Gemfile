@@ -5,5 +5,6 @@ gem "jekyll"
 gem "jekyll-archives"
 gem "jekyll-sitemap"
 gem "jekyll-seo-tag"
+gem "jekyll-feed"
 
 # gem "rails"
