@@ -4,6 +4,7 @@ title:  "Using a Raspberry Pi to add a second HDMI port to a laptop"
 tags: raspberry-pi ffmpeg tutorial linux
 categories: [Tinkering]
 description: A step-by-step tutorial you can follow along
+image: media/banner-rpi-eth-monitor.jpg
 ---
 
 Recently, I purchased a new laptop. I was really focused on spending the least amount of money and had not noticed that the laptop I chose was missing an essential feature : it did not have Display Port over USB C. Not being able to use my second external monitor on this new laptop felt like a huge downgrade from my previous one (which was able to output to both its HDMI and VGA ports simultaneously).
