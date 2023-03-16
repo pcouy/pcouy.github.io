@@ -84,19 +84,19 @@ This will install [`udhcpd`](https://manpages.ubuntu.com/manpages/bionic/man5/ud
 
 {% highlight conf %}
 # Only one lease for the Pi itself, and one for the laptop
-start 10.0.0.0
-end 10.0.0.1
+start 10.0.0.1
+end 10.0.0.2
 
 # udhcpd will use eth0
 interface eth0
 
 # Various options
-option subnet 255.255.255.0
+option subnet 255.255.255.252
 option domain hdmi
 option lease  60  # One minute lease
 
-# The Pi itself will always be 10.0.0.0
-static_lease [PI MAC ADDRESS] 10.0.0.0
+# The Pi itself will always be 10.0.0.1
+static_lease [PI MAC ADDRESS] 10.0.0.1
 {% endhighlight %}
 
 You will need to replace `[PI MAC ADDRESS]` with the actual MAC address of your hardware, which you can find by running `ip a` on the Pi (`link/ether` field).
@@ -106,7 +106,7 @@ pi@rapsberrypi:~ $ sudo systemctl enable udhcpd
 pi@rapsberrypi:~ $ sudo systemctl restart udhcpd
 {% endhighlight %}
 
-The first command above will launch the DHCP server on boot, and the second one will launch it immediately. Rebooting the Pi may help both computers pick up on their new network configurations. From now on, the Raspberry Pi will be reachable from the laptop using `10.0.0.0` as long as the Ethernet cable is plugged to both. The laptop will use the IP `10.0.0.1`.
+The first command above will launch the DHCP server on boot, and the second one will launch it immediately. Rebooting the Pi may help both computers pick up on their new network configurations. From now on, the Raspberry Pi will be reachable from the laptop using `10.0.0.1` as long as the Ethernet cable is plugged to both. The laptop will use the IP `10.0.0.2`.
 
 ### Starting an unoptimized stream
 
@@ -119,15 +119,15 @@ Since both ends of the stream were connected over a single wire with no realisti
 Let's start with the most basic command that does that, without bothering with optimization for now :
 
 {% highlight console %}
-pi@raspberrypi:~ $ mpv --hwdec=drm "tcp://10.0.0.0:1234?listen"
+pi@raspberrypi:~ $ mpv --hwdec=drm "tcp://10.0.0.1:1234?listen"
 {% endhighlight %}
 
-This command makes `mpv` listen on interface `10.0.0.0`, TCP port `1234` and will display the received stream using DRM.
+This command makes `mpv` listen on interface `10.0.0.1`, TCP port `1234` and will display the received stream using DRM.
 
 On the sending side, I started with a simple command to test the stream :
 
 {% highlight console %}
-pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -framerate 5 -f x11grab -i :0.0+0x0 -f mpegts tcp://10.0.0.0:1234
+pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -framerate 5 -f x11grab -i :0.0+0x0 -f mpegts tcp://10.0.0.1:1234
 {% endhighlight %}
 
 From `man ffmpeg`, the syntax is :
@@ -143,7 +143,7 @@ Let's detail the arguments used here :
 - [`-f x11grab`](https://ffmpeg.org/ffmpeg-devices.html#x11grab) : used as an input file option, `-f` specifies the input device. `x11grab` is used for screen grabbing. 
 - `-i :0.0+0x0` : `-i` is usually used for specifying input file. When used with the X11 video input device, specifies where to grab from in the syntax : `[hostname]:display_number.screen_number[+x_offset,y_offset]`
 - [`-f mpegts`](https://ffmpeg.org/ffmpeg-formats.html#mpegts) : used as an output file option, `-f` specifies the output container (also called file format or muxer). `mpegts` designates MPEG-2 transport stream.
-- `tcp://10.0.0.0:1234` is the URL to send the stream to (the `mpv` listener running on the Pi)
+- `tcp://10.0.0.1:1234` is the URL to send the stream to (the `mpv` listener running on the Pi)
 
 This did not meet any of my performance and quality requirements, but provided me with a starting point I could optimize from.
 
@@ -157,13 +157,13 @@ I then tried two optimization strategies on the receiving side, which involved a
 I came up with the following `mpv` command (which I will not detail) before trying another player :
 
 {% highlight console %}
-pi@raspberrypi:~ $ mpv -vo=gpu --gpu-context=drm --input-cursor=no --input-vo-keyboard=no --input-default-bindings=no --hwdec=drm --untimed --no-cache --profile=low-latency --opengl-glfinish=yes --opengl-swapinterval=0 --gpu-hwdec-interop=drmprime-drm --drm-draw-plane=overlay --drm-drmprime-video-plane=primary --framedrop=no --speed=1.01 --video-latency-hacks=yes --opengl-glfinish=yes --opengl-swapinterval=0 tcp://10.0.0.0:1234\?listen
+pi@raspberrypi:~ $ mpv -vo=gpu --gpu-context=drm --input-cursor=no --input-vo-keyboard=no --input-default-bindings=no --hwdec=drm --untimed --no-cache --profile=low-latency --opengl-glfinish=yes --opengl-swapinterval=0 --gpu-hwdec-interop=drmprime-drm --drm-draw-plane=overlay --drm-drmprime-video-plane=primary --framedrop=no --speed=1.01 --video-latency-hacks=yes --opengl-glfinish=yes --opengl-swapinterval=0 tcp://10.0.0.1:1234\?listen
 {% endhighlight %}
 
 While this achieved the best latency I could reach using `mpv` and the basic `ffmpeg` command above, I felt this was too complicated. Some other resources I found online were using [`ffplay`](https://ffmpeg.org/ffplay.html) on the receiving end so I gave it a try. This proved to be a much simpler path, and I achieved comparable results using the following command :
 
 {% highlight console %}
-pi@raspberrypi:~ $ ffplay -autoexit -flags low_delay -framedrop -strict experimental -vf setpts=0 -tcp_nodelay 1 "tcp://10.0.0.0:1234\?listen"
+pi@raspberrypi:~ $ ffplay -autoexit -flags low_delay -framedrop -strict experimental -vf setpts=0 -tcp_nodelay 1 "tcp://10.0.0.1:1234\?listen"
 {% endhighlight %}
 
 Most of these optimizations came from [this StackOverflow post about minimizing delay in a live stream](https://stackoverflow.com/questions/16658873/how-to-minimize-the-delay-in-a-live-streaming-with-ffmpeg). Let's detail the meaning of the options I used :
@@ -180,7 +180,7 @@ The stream sent by the basic `ffmpeg` command gets displayed on the Pi monitor w
 Let's make sure the OS prioritizes the `ffplay` process using the `nice` and `ionice` commands :
 
 {% highlight console %}
-pi@raspberrypi:~ $ sudo nice -n -20 ionice -c 1 -n 0 ffplay -autoexit -flags low_delay -framedrop -strict experimental -vf setpts=0 -tcp_nodelay 1 "tcp://10.0.0.0:1234\?listen"
+pi@raspberrypi:~ $ sudo nice -n -20 ionice -c 1 -n 0 ffplay -autoexit -flags low_delay -framedrop -strict experimental -vf setpts=0 -tcp_nodelay 1 "tcp://10.0.0.1:1234\?listen"
 {% endhighlight %}
 
 ### Supervising `ffplay`
@@ -198,7 +198,7 @@ This will install `supervisor` and open a configuration file for editing. I used
 
 {% highlight conf %}
 [program:ffplay]
-command=nice -n -20 ionice -c 1 -n 0 ffplay -autoexit -flags low_delay -framedrop -strict experimental -vf setpts=0 -tcp_nodelay 1 "tcp://10.0.0.0:1234\?listen"
+command=nice -n -20 ionice -c 1 -n 0 ffplay -autoexit -flags low_delay -framedrop -strict experimental -vf setpts=0 -tcp_nodelay 1 "tcp://10.0.0.1:1234\?listen"
 autorestart=true
 stdout_logfile=/dev/null
 stderr_logfile=/dev/null
@@ -319,7 +319,7 @@ pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -framerate 30 \
     -f x11grab -i :0.0+0x0 \
     -b:v 40M -maxrate 50M -bufsize 200M \
     -vcodec mpeg4 -g 100 -f nut \
-    "tcp://10.0.0.0:1234"
+    "tcp://10.0.0.1:1234"
 {% endhighlight %}
 
 Even though I was satisfied with what I managed to get, I kept tinkering with options. At one point, it became difficult to tell what actually improved the experience and what could be attributed to some kind of placebo effect. Anyway, here is the final command I came up with :
@@ -330,7 +330,7 @@ pierre@laptop:~ $ ffmpeg -video_size 1920x1080 -r 30 -framerate 30 -f x11grab -i
     -field_order tt -fflags nobuffer -threads 1 \
     -vcodec mpeg4 -g 100 -r 30 -bf 0 -mbd bits -flags +aic+mv4+low_delay \
     -thread_type slice -slices 1 -level 32 -strict experimental -f_strict experimental \
-    -syncpoints none -f nut "tcp://10.0.0.0:1234"
+    -syncpoints none -f nut "tcp://10.0.0.1:1234"
 {% endhighlight %}
 
 ### Extending the laptop display
@@ -430,7 +430,7 @@ else
         -thread_type slice -slices 1 -level 32 \
         -strict experimental -f_strict experimental -syncpoints none \
         -vf "$VFARG" -f nut -tcp_nodelay 1 \
-        "tcp://10.0.0.0:1234?tcp_nodelay=1" >/dev/null 2>&1 &
+        "tcp://10.0.0.1:1234?tcp_nodelay=1" >/dev/null 2>&1 &
 
     # Save the ffmpeg pid to a file which we'll read on next invocation
     FFMPEGPID=$!
