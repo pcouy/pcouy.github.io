@@ -3,19 +3,24 @@ layout: default
 ---
 
 <div class="post-details">
-    {{ page.date | date_to_string }} 
-    {% if page.categories.size > 0 %}
-        in
-            {{ page.categories | join: ", " }}
-    {% endif %}
-    .
-    {% if page.tags.size > 0 %}
-        Tags :
-            {% for tag in page.tags %}
-                <a href="/tag/{{ tag }}/">{{ tag }}</a>
-                {% if forloop.rindex0 > 0 %},{% endif %}
-            {% endfor %}
-    {% endif %}
+    <p>
+        {{ page.date | date_to_string }} 
+        {% if page.categories.size > 0 %}
+            in
+                {{ page.categories | join: ", " }}
+        {% endif %}
+        .
+        {% if page.tags.size > 0 %}
+            Tags :
+                {% for tag in page.tags %}
+                    <a href="/tag/{{ tag }}/">{{ tag }}</a>
+                    {% if forloop.rindex0 > 0 %},{% endif %}
+                {% endfor %}
+        {% endif %}
+    </p>
+    <p>
+    <a href="https://github.com/pcouy/pcouy.github.io/commits/main/{{ page.path }}">Edition history on GitHub</a>
+    </p>
 </div>
 
 {{ content }}
