@@ -14,7 +14,7 @@ This is the story of how I managed to overcome this limitation by rolling my own
 
 I quickly hooked a Raspberry Pi to the external monitor and tried to find a turnkey solution that would allow me to stream a virtual screen to the Pi via an Ethernet cable. I looked into using VNC, Steam Remote Play, and some dedicated VNC wrappers I found on GitHub.
 
-Since I was not willing to spend more money on my setup, I used a Raspberry Pi 3 which was sitting unused in one of my drawers. This meant I could not benefit from hardware accelerated h264 decoding, which happened to be a significant limitation for using modern low-latency video streaming solutions. I had to compromise between picture quality, latency and framerate, and could never reach a balance I felt satisfied with : the slow LAN port and CPU could not handle my requirements.
+Since I was not willing to spend more money on my setup, I used a Raspberry Pi 3 which was sitting unused in one of my drawers. This little beasts support hardware-accelerated video decoding, including h264. However, as we'll see later, my specific requirements made it harder to work with GPU video decoders. I had to compromise between picture quality, latency and framerate, and could never reach a balance I felt satisfied with : the slow LAN port and CPU could not handle my requirements.
 
 I also did not like the fact that most of these solutions depended on running a full desktop session on the Pi, which I wanted to avoid in order to save its thin resources.
 
@@ -35,7 +35,7 @@ As I was using a Raspberry Pi 3, I had to consider its limitations :
 
 - Due to slow CPU, use a low-overhead protocol and fast to decode encoding
 - Due to slow network, use a low-bitrate encoding
-- No hardware accelerated h264 decoding
+- No hardware accelerated h264 decoding (this is not a limitation of the Pi 3 per se, but after experimentation [using the `v4l2m2m` codecs negated all my optimizations regarding latency](https://www.reddit.com/r/programming/comments/11r9osx/comment/jc9s8zp/))
 
 Since I was already going to roll my own solution, I also listed some non essential features I would enjoy having, including :
 
