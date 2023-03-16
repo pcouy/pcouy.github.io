@@ -504,3 +504,19 @@ The main defect is that I sometimes get visible encoding/decoding glitches that 
 I made a [GitHub repository that features all needed configuration files and scripts, as well as untested installation scripts](https://github.com/pcouy/rpi-eth-display). The part that runs on the Raspberry Pi seems like a good opportunity to learn how to make a `.deb` package, so I may look into it in the future. If there is interest around this project, I may get motivated to make the process more streamlined and beginner-friendly.
 
 Overall, I am really satisfied with what I managed to come up with. While using it, I even noticed I was able to watch videos without the audio-video delay being noticeable. With this solution available, and considering the money it saved me, I may knowingly purchase a laptop that lacks a second video output when I need to replace this one.
+
+## Updates
+
+### DisplayLink
+
+Some readers have mentioned that this project is very similar to [DisplayLink](https://en.wikipedia.org/wiki/DisplayLink). I don't remember coming across this when I did the research for this project. I think this is because the naming makes it ambiguous that this is not the same thing as DP over USB, and I may have dismissed results mentioning it at the time.
+
+After looking more into it, it is indeed really similar to what I did : it requires installing software on the host computer, and uses an active adapter. One key difference though is that the software you must install to use DisplayLink is proprietary, while this project only uses open source parts.
+
+### GUD
+
+Some other readers have mentioned [GUD, which does the same thing I did except it uses USB](https://github.com/notro/gud) and looks a lot cleaner on the host side by using a kernel module. I did not really look into the Raspberry Pi side of this project, but I'm making a note to come back to it later.
+
+### Socket activated services
+
+If I ever get to turning the Pi-side of the project into a deb package, I will probably make good use of [this suggestion to use `systemd` socket activated services](https://news.ycombinator.com/item?id=35172740) as a replacement for using `supervisord`.
