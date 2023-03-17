@@ -3,12 +3,15 @@ layout: default
 title: Pierre Couy's tech corner
 ---
 
-<p>Welcome to my personal website. You will mostly find blog posts about work-related stuff, side projects, and resources related to computer science in general.</p>
+<article role="document" tabindex="0">
+    <p>Welcome to my personal website. You will mostly find blog posts about work-related stuff, side projects, and resources related to computer science in general.</p>
+</article>
 
-<h2>Posts</h2>
-
-<ul class="post-list">
-    {% for post in site.posts %}
-        {% include post.html post=post %}
-    {% endfor %}
-</ul>
+<article role="feed">
+    <h2>Posts</h2>
+    <ul class="post-list">
+        {% for post in site.posts %}
+            {% include post.html post=post %}
+        {% endfor %}
+    </ul>
+</article>

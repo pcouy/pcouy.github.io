@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<div class="post-details">
+<section role="contentinfo" class="post-details">
     <p>
         {{ page.date | date_to_string }} 
         {% if page.categories.size > 0 %}
@@ -21,18 +21,20 @@ layout: default
     <p>
         <a href="https://github.com/pcouy/pcouy.github.io/commits/main/{{ page.path }}">Edition history on GitHub</a>
     </p>
-</div>
+</section>
 
 {% if page.image != nil %}
-<div class="post-banner">
+<section role="banner" class="post-banner">
     <img src="/{{ page.image }}" alt="{{ page.title }}">
-</div>
+</section>
 {% endif %}
 
-{{ content }}
+<article role="document" tabindex="0">
+    {{ content }}
+</article>
 
 <hr>
 
-<p>
-This website uses Jekyll as a static site generator and is hosted on GitHub pages. <a href="https://github.com/pcouy/pcouy.github.io/discussions">You can use GitHub discussions as a substitute for a comment section</a>
-</p>
+<aside>
+This website uses Jekyll as a static site generator and is hosted on GitHub pages. <a href="https://github.com/pcouy/pcouy.github.io/discussions">You can use GitHub discussions as a substitute for post comments</a>
+</aside>

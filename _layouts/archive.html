@@ -2,15 +2,17 @@
 layout: default
 ---
 
-<h2>
-    Archive :
-    {% if page.title == nil %}
-        {{ page.date | date_to_string }}
-    {% endif %}
-</h2>
+<article role="feed" tabindex="0">
+    <h2>
+        Archive :
+        {% if page.title == nil %}
+            {{ page.date | date_to_string }}
+        {% endif %}
+    </h2>
 
-<ul class="post-list">
-    {% for post in page.posts %}
-        {% include post.html post=post %}
-    {% endfor %}
-</ul>
+    <ul class="post-list">
+        {% for post in page.posts %}
+            {% include post.html post=post %}
+        {% endfor %}
+    </ul>
+</article>

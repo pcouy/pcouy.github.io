@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: About
 date: 2023-03-13
 ---
