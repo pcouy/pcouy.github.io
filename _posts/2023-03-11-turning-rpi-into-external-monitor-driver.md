@@ -3,7 +3,7 @@ layout: post
 title:  "Using a Raspberry Pi to add a second HDMI port to a laptop"
 tags: raspberry-pi ffmpeg tutorial linux
 categories: [Tinkering]
-description: A step-by-step tutorial you can follow along
+description: A step-by-step tutorial you can follow along, featuring ffmpeg, xrandr, tcpdump and a dhcp server running on a Raspberry Pi
 image: media/banner-rpi-eth-monitor.jpg
 ---
 
