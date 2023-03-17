@@ -6,6 +6,8 @@ body
   font-size: 1.2em
 
 footer
+  & svg
+    margin: auto
   text-align: center
   margin-top: 1em
 
@@ -13,14 +15,19 @@ h1, h2, h3, h4
   color: $yellow
 
 a
-  color: $color2
+  color: lighten($color2, 20%)
+  svg
+    height: 1em
+    fill: lighten($color2, 20%)
 
 a:hover
   color: $color2-alt
+  svg
+    fill: $color2-alt
 
 nav a
   margin: 5px
-  color: $blue
+  color: lighten($blue, 10%)
   &:hover
     color: $cyan
   &.active
