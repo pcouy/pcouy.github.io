@@ -3,6 +3,7 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jekyll-image-size
 
 permalink: /:slugified_categories/:year/:month/:title:output_ext
 excerpt_separator: "#"

@@ -8,3 +8,5 @@ gem "jekyll-seo-tag"
 gem "jekyll-feed"
 
 # gem "rails"
+
+gem "jekyll-image-size", "~> 1.2"
