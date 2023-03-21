@@ -11,6 +11,8 @@ Recently, I purchased a new laptop. I was really focused on spending the least a
 
 This is the story of how I managed to overcome this limitation by rolling my own virtual screen streaming solution using a Raspberry Pi. I tried to write it in a way you can follow along if you want to reproduce it. If you are just looking to get it up and running as quick as possible, you can check out [the GitHub repository containing configuration files and installation scripts](https://github.com/pcouy/rpi-eth-display) (Work In Progress)
 
+You will find a short video showcasing the result at the end of this article.
+
 ## Existing solutions and limitations of old Raspberry Pi models
 
 I quickly hooked a Raspberry Pi to the external monitor and tried to find a turnkey solution that would allow me to stream a virtual screen to the Pi via an Ethernet cable. I looked into using VNC, Steam Remote Play, and some dedicated VNC wrappers I found on GitHub.
@@ -496,7 +498,9 @@ I then restarted the `supervisor` daemon, which had the effect of stopping the s
 
 ## Improvements and last thoughts
 
-I finally reached a solution I could use in my day-to-day life, with only small quirks I don't mind dealing with.
+I finally reached a solution I could use in my day-to-day life, with only small quirks I don't mind dealing with. Here's a video showcasing the setup I'm using daily :
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Q_opC1bHSuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 I still have to manually create the new mode and add it to the virtual display after every reboot. It would be really nice to have the Pi detect the resolution of the monitor and use it to automatically configure the virtual display on the laptop. However, since I'm of the kind who rarely reboots their computers and I already spent quite some time on this project, I moved on from it without taking care of this part.
 
