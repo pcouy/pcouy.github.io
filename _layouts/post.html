@@ -13,7 +13,7 @@ layout: default
         {% if page.tags.size > 0 %}
             Tags :
                 {% for tag in page.tags %}
-                    <a href="/tag/{{ tag }}/">{{ tag }}</a>
+                    <a rel="tag" href="/tag/{{ tag }}/">{{ tag }}</a>
                     {% if forloop.rindex0 > 0 %},{% endif %}
                 {% endfor %}
         {% endif %}
