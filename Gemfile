@@ -10,3 +10,5 @@ gem "jekyll-feed"
 # gem "rails"
 
 gem "jekyll-image-size", "~> 1.2"
+
+gem "jekyll-fetch", "~> 0.1.1"

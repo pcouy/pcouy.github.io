@@ -4,10 +4,11 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-image-size
+  - jekyll-fetch
 
 permalink: /:slugified_categories/:year/:month/:title:output_ext
 excerpt_separator: "#"
-  
+
 url: https://pierre-couy.dev
 title: Pierre Couy's tech corner
 author: Pierre Couy
@@ -16,3 +17,7 @@ description: Freelance developper, computer science teacher, passionate about pr
 jekyll-archives:
   enabled: all
 
+collections:
+  projects:
+    output: true
+    layout: post.html
