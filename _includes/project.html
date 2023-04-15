@@ -2,10 +2,10 @@
     <article>
         <section role="contentinfo">
             <h3><a href="{{ include.post.url }}">{{ include.post.title }}</a></h3>
+            {% if include.post.description %}
+                <p>{{ include.post.description | markdownify }}</p>
+            {% endif %}
             <div class="post-details">
-                {% if include.post.description %}
-                    <p>{{ include.post.description | markdownify }}</p>
-                {% endif %}
                 <p>
                     {% if include.post.links.size > 0 %}
                         {% for link in include.post.links %}
