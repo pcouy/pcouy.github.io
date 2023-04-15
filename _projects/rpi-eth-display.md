@@ -8,8 +8,8 @@ links:
   writeup:
     url: "/tinkering/2023/03/turning-rpi-into-external-monitor-driver.html"
     name: Write-up
+description:
+  Configuration files and installation scripts accompanying the write-up on this blog.
 ---
-
-# DIY DisplayLink adapter using a Raspberry Pi
 
 {{ page.links.code.url | append: "/raw/main/README.md" | fetch }}

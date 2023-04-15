@@ -9,14 +9,6 @@ layout: default
                 <a href="{{ link[1].url }}">{{ link[1].name }}</a>
             {% endfor %}
         {% endif %}
-        <br>
-        {% if page.tags.size > 0 %}
-            Tags :
-                {% for tag in page.tags %}
-                    <a rel="tag" href="/tag/{{ tag }}/">{{ tag }}</a>
-                    {% if forloop.rindex0 > 0 %},{% endif %}
-                {% endfor %}
-        {% endif %}
     </p>
     <p>
         <a href="https://github.com/pcouy/pcouy.github.io/commits/main/{{ page.path }}">Edition history on GitHub</a>

@@ -7,8 +7,12 @@ links:
   demo:
     url: "https://crocodile-couture.fr"
     name: Demo
+tags: jekyll imagemagick responsive
+description:
+  Jekyll plugin that overloads the default `kramdown` parser to turn basic images into HTML `picture` tags providing different sizes for the pictures.
+  
+  
+  Pictures of different sizes will be auto-generated at build-time using `imagemagick` according to the configuration.
 ---
-
-# Jekyll Picture Tag
 
 {{ page.links.code.url | append: "/raw/main/README.md" | fetch }}
