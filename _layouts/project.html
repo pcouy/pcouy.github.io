@@ -2,16 +2,14 @@
 layout: default
 ---
 
-<section role="contentinfo" class="post-details">
+<section role="contentinfo" class="project-details">
     <p>
         {% if page.links.size > 0 %}
             {% for link in page.links %}
                 <a href="{{ link[1].url }}">{{ link[1].name }}</a>
             {% endfor %}
         {% endif %}
-    </p>
-    <p>
-        <a href="https://github.com/pcouy/pcouy.github.io/commits/main/{{ page.path }}">Edition history on GitHub</a>
+        <a href="https://github.com/pcouy/pcouy.github.io/commits/main/{{ page.path }}">Edition history of this page on GitHub</a>
     </p>
 </section>
 
