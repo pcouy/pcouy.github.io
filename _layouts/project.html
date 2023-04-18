@@ -22,7 +22,7 @@ layout: default
     {% if page.repo %}
         <hr>
         <h2>Project README</h2>
-        {{ page.repo | github_readme | markdownify }}
+        {{ page.repo | github_readme: page.branch | markdownify }}
     {% endif %}
 </article>
 
