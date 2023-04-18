@@ -10,7 +10,7 @@
             <div class="project-details">
                 <p>
                     {% if include.post.repo %}
-                        <a href="{{ include.post.repo | repo_to_github_url }}"
+                        <a href="{{ include.post.repo | github_url }}"
                         >Code on GitHub</a>
                     {% endif %}
                     {% if include.post.links.size > 0 %}
