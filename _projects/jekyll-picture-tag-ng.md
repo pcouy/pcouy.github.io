@@ -5,6 +5,9 @@ links:
   demo:
     url: "https://crocodile-couture.fr"
     name: Demo
+  gem:
+    url: "https://rubygems.org/gems/jekyll-picture-tag-ng"
+    name: Gem
 tags: jekyll imagemagick responsive
 ---
 
