@@ -5,6 +5,10 @@ layout: default
 <section role="contentinfo" class="project-details">
     <p>
         {% if page.links.size > 0 %}
+            {% if page.repo %}
+                <a href="{{ page.repo | repo_to_github_url }}"
+                >Code on GitHub</a>
+            {% endif %}
             {% for link in page.links %}
                 <a href="{{ link[1].url }}">{{ link[1].name }}</a>
             {% endfor %}
@@ -15,6 +19,11 @@ layout: default
 
 <article role="document" tabindex="0">
     {{ content }}
+    {% if page.repo %}
+        <hr>
+        <h2>Project README</h2>
+        {{ page.repo | github_readme | markdownify }}
+    {% endif %}
 </article>
 
 <hr>

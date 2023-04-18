@@ -4,9 +4,15 @@
             <h3><a href="{{ include.post.url }}">{{ include.post.title }}</a></h3>
             {% if include.post.description %}
                 <p>{{ include.post.description | markdownify }}</p>
+            {% else %}
+                <p>{{ include.post.excerpt }}</p>
             {% endif %}
-            <div class="post-details">
+            <div class="project-details">
                 <p>
+                    {% if include.post.repo %}
+                        <a href="{{ include.post.repo | repo_to_github_url }}"
+                        >Code on GitHub</a>
+                    {% endif %}
                     {% if include.post.links.size > 0 %}
                         {% for link in include.post.links %}
                             <a href="{{ link[1].url }}">{{ link[1].name }}</a>
