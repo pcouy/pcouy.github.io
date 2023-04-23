@@ -20,5 +20,6 @@ jekyll-archives:
 
 collections:
   projects:
+    sort_by: order
     output: true
     layout: post.html

@@ -1,5 +1,6 @@
 ---
 title: DIY DisplayLink adapter using a Raspberry Pi
+order: 1
 layout: project
 repo: pcouy/rpi-eth-display
 links:
