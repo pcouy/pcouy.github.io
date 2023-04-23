@@ -5,6 +5,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-image-size
   - jekyll-fetch
+  - jemoji
 
 permalink: /:slugified_categories/:year/:month/:title:output_ext
 excerpt_separator: "#"
