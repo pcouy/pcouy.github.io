@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap demo</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<style>
+body {
+    background-color: black;
+    color: lightgray;
+}
+.price {
+    text-align: right;
+}
+.price:after {
+    font-weight: bolder;
+    font-size: 1.5rem;
+}
+
+.price-up {
+    color: green;
+}
+.price-up:after {
+    content: "\2191";
+}
+
+.price-down {
+    color: red;
+}
+.price-down:after {
+    content: "\2193";
+}
+.price-down {
+    color: red;
+}
+
+.price-equal {
+    color: yellow;
+}
+.price-equal:after {
+    content: "=";
+}
+
+.column-title {
+    font-size: 1em;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+}
+table {
+    width: 100%;
+}
+</style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row gx-5" id="main-row">
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script>
+            let load_prices = () => {
+                let columns = ["Bières Pression", "Bières bouteilles", "Shots", "Cocktails", "Softs"];
+                let main_row_e = document.querySelector("#main-row");
+                main_row_e.innerHTML = "";
+                columns.forEach((column)=>{
+                    let column_e = document.createElement("div");
+                    column_e.classList.add("col-2");
+                    column_e.innerHTML = `<h1 class="column-title">${column}</h1>`;
+                    let table_e = document.createElement("table");
+                    //table_e.classList.add("table")
+                    let tbody_e = document.createElement("tbody");
+
+                    let price_change_choices = ["up", "down", "equal", "up", "down"];
+                    for (let i = 0; i < 30; i++) {
+                        let drink_e = document.createElement("tr");
+                        drink_e.classList.add("drink-item");
+                        let price = Math.round(Math.random()*10*100)/100;
+                        let price_change = price_change_choices[Math.floor(Math.random()*3)];
+                        drink_e.innerHTML = `
+                            <td class="drink-name">${column} ${i+1}</td>
+                            <td class="price price-${price_change}">${price} €</td>
+                        `;
+                        tbody_e.appendChild(drink_e);
+                    }
+                    table_e.appendChild(tbody_e);
+                    column_e.appendChild(table_e);
+                    main_row_e.appendChild(column_e);
+                });
+            }
+            setInterval(load_prices, 5000);
+            load_prices();
+        </script>
+    </body>
+</html>
