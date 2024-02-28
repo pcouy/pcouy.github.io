@@ -14,3 +14,5 @@ gem "jekyll-image-size", "~> 1.2"
 gem "jekyll-fetch", "~> 0.2.1"
 
 gem "jemoji", "~> 0.13.0"
+
+gem "json", "~> 2.7"
