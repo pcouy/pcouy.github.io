@@ -10,3 +10,4 @@ links:
 ---
 
 Old userscript that reverted auto-translated titles on YouTube to the original language.
+Probably does not work anymore.
