@@ -1,6 +1,6 @@
 ---
 title: DRF + Nuxt project template
-order: 8
+order: 5
 layout: project
 repo: pcouy/drf-nuxt-template
 ---

@@ -1,6 +1,6 @@
 ---
 layout: project
-order: 5
+order: 3
 repo: pcouy/jekyll-picture-tag-ng
 links:
   demo:

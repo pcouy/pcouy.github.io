@@ -1,6 +1,6 @@
 ---
 title: Writable nested Serializers compatible with DRF's Browsable API
-order: 8
+order: 4
 layout: project
 repo: pcouy/drf-nested-browsable
 links:

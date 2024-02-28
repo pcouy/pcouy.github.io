@@ -1,6 +1,6 @@
 ---
 layout: project
-order: 5
+order: 7
 repo: pcouy/jekyll-chatgpt
 links:
   demo:

@@ -1,6 +1,6 @@
 ---
 layout: project
-order: 5
+order: 6
 repo: pcouy/jekyll-fetch
 tags: jekyll
 links:
