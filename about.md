@@ -11,3 +11,10 @@ Through this blog, I'll be sharing my experiences, ideas, and knowledge on vario
 As a tinkerer at heart, I'm always exploring new software and hardware, and I'm excited to share my discoveries and learnings with you. Having an audience will also motivate me to finish and write about a lot of stuff I tinker with but then gets lost because I forget about it or never touch it again.
 
 So whether you're a seasoned developer or just starting out, join me on this exciting journey as we explore the world of computers together. Let's geek out together!
+
+## Hire me
+
+I'm currently available for hire as a freelance developer, teacher, or mentor.
+If you're interested in working with me, please don't hesitate to reach out by
+e-mail at [sales@pierre-couy.dev](mailto:sales@pierre-couy.dev). I'd be happy to discuss any
+potential projects or collaborations you have in mind.
