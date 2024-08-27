@@ -1,12 +1,18 @@
 <nav>
-    {% for item in site.data.navigation %}
-        <a href="{{ item.link }}" {% if page.url == item.link %}class="active"{% endif %}>
-            {{ item.name }}</a>
-    {% endfor %}
-    {% for category in site.categories %}
-        {% assign slug = category[0] | slugify %}
-        {% assign link = "/category/" | append: slug | append: "/" %}
-        <a href="{{ link }}" {% if page.url == link %}class="active"{% endif %}>
-            {{ category[0] }}</a>
-    {% endfor %}
+    <ul>
+        {% for item in site.data.navigation %}
+            <li>
+                <a href="{{ item.link }}" {% if page.url == item.link %}class="active"{% endif %}>
+                    {{ item.name }}</a>
+            </li>
+        {% endfor %}
+        {% for category in site.categories %}
+            {% assign slug = category[0] | slugify %}
+            {% assign link = "/category/" | append: slug | append: "/" %}
+            <li>
+                <a href="{{ link }}" {% if page.url == link %}class="active"{% endif %}>
+                    {{ category[0] }}</a>
+            </li>
+        {% endfor %}
+    </ul>
 </nav>
