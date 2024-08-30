@@ -5,6 +5,7 @@ tags: linux nginx tutorial privacy selfhosting
 categories:
   - Server admin
 description: A tutorial featuring two examples showing how you can increase your privacy using nginx to proxy third-party services.
+image: media/banner-immich-nginx-caching.png
 ---
 
 If you are self-hosting any service, chances are that you care about
