@@ -33,8 +33,6 @@ provider for an Immich instance.
 
 ## Why do this
 
-
-
 Hosting a caching proxy between the clients and the tile provider can bring
 several general benefits :
 
@@ -69,6 +67,9 @@ but this would obviously need to be adapted.
 While this guide is directed towards Immich users, the nginx configuration can
 be easily used with other applications. As long as it provides a way to switch
 tile providers, you should be able to use your proxy with it.
+
+If you get stuck trying to follow this guide, feel free to ask anything [in the
+support thread on GitHub](https://github.com/pcouy/pcouy.github.io/discussions/1).
 
 ### Caching proxy
 
