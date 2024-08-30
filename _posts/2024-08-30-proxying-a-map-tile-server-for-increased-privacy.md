@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Increase privacy by using nginx as caching proxy in front of a map tile proxy server"
+title:  "Increase privacy by using nginx as a caching proxy in front of a map tile proxy server"
 tags: linux nginx tutorial privacy selfhosting
 categories:
   - Server admin
@@ -19,12 +19,12 @@ Such tile servers host a whole world map at several zoom levels, and provide
 clients with map fragments (tiles) for the requested coordinates and zoom
 level.
 Unfortunately, it is not easy to host such a tile server : the [easiest solution
-I could find](https://protomaps.com/) still require more than 100GB of disk
+I could find](https://protomaps.com/) still requires more than 100GB of disk
 space to serve a full world map. On the other hand, using a third party for this
-makes clients send a bunch of requests to them. This requests will give the
+makes clients send a bunch of requests to them. These requests will give the
 third-party details about any location viewed on the map. It will also generally
-include other informations, such as the URL you're viewing the map from and the
-client's IP address.
+include other informations, such as the URL you're viewing the map from and
+clients IP addresses.
 
 This article will show how to build a caching reverse proxy in order to mitigate these
 privacy concerns while avoiding the need to host more than 100GB of map data.
