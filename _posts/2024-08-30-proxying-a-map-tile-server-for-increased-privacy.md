@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Increase privacy by using nginx as a caching proxy in front of a map tile proxy server"
+title:  "Increase privacy by using nginx as a caching proxy in front of a map tile server"
 tags: linux nginx tutorial privacy selfhosting
 categories:
   - Server admin
