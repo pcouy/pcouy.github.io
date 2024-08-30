@@ -6,13 +6,18 @@
                     {{ item.name }}</a>
             </li>
         {% endfor %}
-        {% for category in site.categories %}
-            {% assign slug = category[0] | slugify %}
-            {% assign link = "/category/" | append: slug | append: "/" %}
-            <li>
-                <a href="{{ link }}" {% if page.url == link %}class="active"{% endif %}>
-                    {{ category[0] }}</a>
-            </li>
-        {% endfor %}
+        <li>
+            <a href="#menu_categories">Categories</a>
+            <ul id="menu_categories">
+                {% for category in site.categories %}
+                    {% assign slug = category[0] | slugify %}
+                    {% assign link = "/category/" | append: slug | append: "/" %}
+                    <li>
+                        <a href="{{ link }}" {% if page.url == link %}class="active"{% endif %}>
+                            {{ category[0] }}</a>
+                    </li>
+                {% endfor %}
+            <ul>
+        </li>
     </ul>
 </nav>

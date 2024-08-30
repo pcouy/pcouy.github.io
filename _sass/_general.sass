@@ -28,18 +28,32 @@ a:hover
   svg
     fill: $color2-alt
 
-nav > ul
-  list-style: none
-  padding: 0
-  li
-    display: inline
-nav a
-  margin: 5px
-  color: lighten($blue, 10%)
-  &:hover
-    color: $cyan
-  &.active
-    color: $color1-alt
+nav
+  a
+    margin: 5px
+    color: lighten($blue, 10%)
+    &:hover
+      color: $cyan
+    &.active
+      color: $color1-alt
+  & ul
+    list-style: none
+    padding: 0
+    & > li
+      display: inline
+      position: relative
+      & > ul
+        display: none
+        li
+          display: list-item
+      &:hover > ul
+        display: block
+        position: absolute
+        left: 0
+        padding: 0.2lh
+        border: 1px solid black
+        width: max-content
+        background-color: darken($background, 3%)
 
 img
   max-width: 100%
