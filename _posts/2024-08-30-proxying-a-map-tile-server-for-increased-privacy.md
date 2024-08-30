@@ -15,7 +15,7 @@ intensive for personal servers.
 
 One example of this is map tile servers, which are relied upon for map features
 in a variety of software, such as [Immich](https://immich.app/) (awesome Google Photos replacement !).
-Such tile servers host a whole world map at several zoom level, and provide
+Such tile servers host a whole world map at several zoom levels, and provide
 clients with map fragments (tiles) for the requested coordinates and zoom
 level.
 Unfortunately, it is not easy to host such a tile server : the [easiest solution
