@@ -185,3 +185,5 @@ Replace the `alias` parameter with the location where you saved the json
 map style. After reloading nginx, your json style will be available at
 `https://immich.your-domain.tld/map_style.json`. You can now use this URL to
 your style as both the light and dark themes in your instance's settings.
+
+You can now [set up your Immich instance to use your new JSON map style](https://immich.app/docs/guides/custom-map-styles)
