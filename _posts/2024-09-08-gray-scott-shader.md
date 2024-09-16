@@ -642,7 +642,7 @@ Their work has allowed me to quickly try out speed-constant values which produce
 interesting results. The video below showcases a few set of well-known parameters.
 
 <iframe width="560" height="315"
-src="https://www.youtube-nocookie.com/embed/rFwKSS5C3e8?si=sY4Kx6XrGd_fXJm4"
+src="https://www.youtube.com/embed/rFwKSS5C3e8?si=rrxew4JtzG42cgNC"
 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
 clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
