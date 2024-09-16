@@ -6,13 +6,18 @@
                 {{ include.post.date | date_to_string }} 
                 {% if include.post.categories.size > 0 %}
                     in
-                        {{ include.post.categories | join: ", " }}
+                        {% for category in include.post.categories %}
+                            {% assign slug = category | slugify %}
+                            {% assign link = "/category/" | append: slug | append: "/" %}
+                                <a href="{{ link }}" {% if page.url == link %}class="active"{% endif %}>
+                                    {{ category }}</a>{% unless forloop.last %}, {% endunless -%}
+                        {% endfor %}
                 {% endif %}
                 .
                 {% if include.post.tags.size > 0 %}
                     Tags :
                         {% for tag in include.post.tags %}
-                            <a href="/tag/{{ tag }}/">{{ tag }}</a>
+                            <a href="/tag/{{ tag | slugify }}/">{{ tag }}</a>
                             {% if forloop.rindex0 > 0 %},{% endif %}
                         {% endfor %}
                 {% endif %}

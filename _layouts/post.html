@@ -7,13 +7,18 @@ layout: default
         {{ page.date | date_to_string }} 
         {% if page.categories.size > 0 %}
             in
-                {{ page.categories | join: ", " }}
+                {% for category in page.categories %}
+                    {% assign slug = category | slugify %}
+                    {% assign link = "/category/" | append: slug | append: "/" %}
+                        <a href="{{ link }}" {% if page.url == link %}class="active"{% endif %}>
+                            {{ category }}</a>{% unless forloop.last %}, {% endunless -%}
+                {% endfor %}
         {% endif %}
         .
         {% if page.tags.size > 0 %}
             Tags :
                 {% for tag in page.tags %}
-                    <a rel="tag" href="/tag/{{ tag }}/">{{ tag }}</a>
+                    <a rel="tag" href="/tag/{{ tag | slugify }}/">{{ tag }}</a>
                     {% if forloop.rindex0 > 0 %},{% endif %}
                 {% endfor %}
         {% endif %}
