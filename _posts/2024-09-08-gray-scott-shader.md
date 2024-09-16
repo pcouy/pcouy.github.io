@@ -122,32 +122,6 @@ we'll call the "speed constant of the reaction". Since 2 molecules of $$B$$ are
 required at the input of the reaction, it needs to appear twice in the formula
 for the reaction speed.
 
-In the end, when simulating the reaction above for a single time step, the
-concentrations of $$A$$, $$B$$ and $$C$$ need to be updated in the following way
-for every $$(x,y)$$ cell in the simulation :
-
-<p>
-$$ [A](t+dT,x,y) = [A](t,x,y) - speed(t,x,y)*dT $$
-$$ [B](t+dT,x,y) = [B](t,x,y) - 2*speed(t,x,y)*dT $$
-$$ [C](t+dT,x,y) = [C](t,x,y) + 4*speed(t,x,y)*dT $$
-</p>
-
-Replacing $$speed(t,x,y)$$ with its expression from above yields :
-
-<p>
-$$ [A](t+dT,x,y) = [A](t,x,y) - k*[A](t,x,y)*[B](t,x,y)^2*dT $$
-$$ [B](t+dT,x,y) = [B](t,x,y) - 2*k*[A](t,x,y)*[B](t,x,y)^2*dT $$
-$$ [C](t+dT,x,y) = [C](t,x,y) + 4*k*[A](t,x,y)*[B](t,x,y)^2*dT $$
-</p>
-
-where \\( dT \\) is the duration of a time step. Notice that the numbers in
-front of $$speed_t$$ come from the quantities in the equation that summarizes
-the reaction.
-
-Looking closely at this update rule, you may notice that chemical reactions
-happen independently in each cell. This can be evidenced by the fact that the
-formula for updating cell $$(x,y)$$ only involves coordinates $$(x,y)$$ and
-ignores concentrations in neighboring cells (such as $$(x+dX,y)$$).
 
 #### Diffusion
 
@@ -164,40 +138,15 @@ species $$X$$ that leaks over a base unit of time, and we will call it the diffu
 Let's consider two simple cases to make sure this is a reasonable way to model
 diffusion :
 
-If the quantity is homogeneous over the grid (the same in every cell), the outgoing
-amount will be the same as the incoming one, resulting in the quantity staying
-homogeneous.
-
-On the other hand, if a cell $$C_1$$ contains more than a neighbor cell $$C_2$$, then
-$$C_1$$ will leak a larger amount to its neighbors than $$C_2$$. This will cause
-the quantity inside $$C_1$$ to decrease, while the quantity inside $$C_2$$ will
-increase. In the end, quantities inside $$C_1$$ and $$C_2$$ are closer together
-than they were at the start, which is consistent for a process that homogenizes
-quantities.
-
-We can write the following equations for a "two-cell" system :
-
-* The amount leaked out of a cell $$C_y$$ over duration $$dT$$
-  is $$out_X(t,C_y) = \tau * [X](t,C_y) * dT$$.
-* Anything that leaks out of a cell $$C_y$$ gets inside the other cell $$C_z$$ :
-  $$in_X(t,C_z) = out_X(t,C_y)$$
-* The variation of quantity in a cell $$C_y$$ is the difference between the quantity
-  that leaked in and the quantity that leaked out :
-  $$[X](t+dT,C_y) - [X](t,C_y) = in_X(t,C_y) - out_X(t,C_y)$$
-  for $$y=1$$ and $$y=2$$
-
-By rearranging these equations, we get the following update rule for diffusion :
-
-<p>
-$$[X](t+dT,C_y) = [X](t,C_y) + \tau_X * [X](t,C_z) * dT - \tau_X * [X](t,C_y)) * dT $$
-$$[X](t+dT,C_y) = (1-\tau_X * dT) * [X](t,C_y) + \tau_X * dT * [X](t,C_z)$$
-</p>
-
-with $$(y,z) = (1,2)$$ or $$(y,z) = (2,1)$$.
-
-This update rule can be generalized from a two-cell system to the 2D grid by
-replacing $$[X](t,C_z)$$ by a (possibly weighted) average of the concentrations
-in the neighbor cells.
+* If the quantity is homogeneous over the grid (the same in every cell), the outgoing
+  amount will be the same as the incoming one, resulting in the quantity staying
+  homogeneous.
+* On the other hand, if a cell $$C_1$$ contains more than a neighbor cell $$C_2$$, then
+  $$C_1$$ will leak a larger amount to its neighbors than $$C_2$$. This will cause
+  the quantity inside $$C_1$$ to decrease, while the quantity inside $$C_2$$ will
+  increase. In the end, quantities inside $$C_1$$ and $$C_2$$ are closer together
+  than they were at the start, which is consistent for a process that homogenizes
+  quantities.
 
 #### Catalytic reactions
 
@@ -239,13 +188,6 @@ for the catalyst. For instance :
 
 <p>$$ 2A + C \rightarrow 2C $$</p>
 
-The update rule for this reaction is then :
-
-<p>
-$$ [A](t+dT,x,y) = [A](t,x,y) - 2*k*[A](t,x,y)^2*[C](t,x,y)*dT $$
-$$ [C](t+dT,x,y) = [C](t,x,y) + (2-1)*k*[A](t,x,y)^2*[C](t,x,y)*dT $$
-</p>
-
 Autocatalytic reactions are of special interest because of their role in biology and
 their [supposed role in the origin of life](https://en.wikipedia.org/wiki/Abiogenesis).
 
@@ -272,22 +214,6 @@ kill -- $$B$$.
 Let's also add a process that removes a fixed fraction of $$A$$ and $$B$$ from
 every cell at each time step. We will use the value of the feed rate as a speed
 constant for this process.
-
-By combining the update rules for these processes (which consists in
-successively applying them), we get the following update rules for the
-"reaction" part of our Gray-Scott model :
-
-<p>
-$$[A](t+dT) = [A](t) + (F - S * [A](t) * [B](t)^2 - F * [A](t)) * dT$$
-$$[B](t+dT) = [B](t) + (S * [A](t) * [B](t)^2 - K * [B](t) - F * [B](t)) * dT $$
-</p>
-
-which can be rearranged as :
-
-<p>
-$$[A](t+dT) = [A](t) + (F * (1-[A](t)) - S * [A](t) * [B](t)^2) * dT$$
-$$[B](t+dT) = [B](t) + (S * [A](t) * [B](t)^2 - (K+F) * [B](t)) * dT$$
-</p>
 
 Diffusion, occurring concurrently with these reactions, is crucial for complex
 patterns to emerge. It will allow $$B$$ to
@@ -389,6 +315,99 @@ equal to `vec3(0.0, 0.2, 0.2)`. You can reference each vector coordinate by `x`,
 the symbols `r`, `g`, `b` and `a` can also be used.
 
 ## Implementing the simulation
+
+### Update rules
+
+This is the most math-heavy section of the article, in which we derive the
+update rules for the simulation.
+
+#### Reactions
+
+In the general case, when simulating the reaction $$A + 2B \rightarrow C$$ for a single time step, the
+concentrations of $$A$$, $$B$$ and $$C$$ need to be updated in the following way
+for every $$(x,y)$$ cell in the simulation :
+
+<p>
+$$ [A](t+dT,x,y) = [A](t,x,y) - speed(t,x,y)*dT $$
+$$ [B](t+dT,x,y) = [B](t,x,y) - 2*speed(t,x,y)*dT $$
+$$ [C](t+dT,x,y) = [C](t,x,y) + 4*speed(t,x,y)*dT $$
+</p>
+
+Replacing $$speed(t,x,y)$$ with its expression from above yields :
+
+<p>
+$$ [A](t+dT,x,y) = [A](t,x,y) - k*[A](t,x,y)*[B](t,x,y)^2*dT $$
+$$ [B](t+dT,x,y) = [B](t,x,y) - 2*k*[A](t,x,y)*[B](t,x,y)^2*dT $$
+$$ [C](t+dT,x,y) = [C](t,x,y) + 4*k*[A](t,x,y)*[B](t,x,y)^2*dT $$
+</p>
+
+where \\( dT \\) is the duration of a time step. Notice that the numbers in
+front of $$speed(t)$$ come from the quantities in the equation that summarizes
+the reaction.
+
+Looking closely at this update rule, you may notice that chemical reactions
+happen independently in each cell. This can be evidenced by the fact that the
+formula for updating cell $$(x,y)$$ only involves coordinates $$(x,y)$$ and
+ignores concentrations in neighboring cells (such as $$(x+dX,y)$$).
+
+##### Auto-catalytic reactions
+
+Consider the following auto-catalytic reaction :
+
+<p>
+$$ 2A + C \rightarrow 2C $$
+</p>
+
+The update rule for this reaction is then
+
+<p>
+$$ [A](t+dT,x,y) = [A](t,x,y) - 2*k*[A](t,x,y)^2*[C](t,x,y)*dT $$
+$$ [C](t+dT,x,y) = [C](t,x,y) + (2-1)*k*[A](t,x,y)^2*[C](t,x,y)*dT $$
+</p>
+
+##### Gray-Scott reactions
+
+By combining the update rules for all processes (which consists in
+successively applying them) previously described, we get the following
+update rules for the "reactions" part of our Gray-Scott model :
+
+<p>
+$$[A](t+dT) = [A](t) + (F - S * [A](t) * [B](t)^2 - F * [A](t)) * dT$$
+$$[B](t+dT) = [B](t) + (S * [A](t) * [B](t)^2 - K * [B](t) - F * [B](t)) * dT $$
+</p>
+
+which can be rearranged as :
+
+<p>
+$$[A](t+dT) = [A](t) + (F * (1-[A](t)) - S * [A](t) * [B](t)^2) * dT$$
+$$[B](t+dT) = [B](t) + (S * [A](t) * [B](t)^2 - (K+F) * [B](t)) * dT$$
+</p>
+
+#### Diffusion
+
+We can write the following equations for a "two-cell" system :
+
+* The amount leaked out of a cell $$C_y$$ over duration $$dT$$
+  is $$out_X(t,C_y) = \tau * [X](t,C_y) * dT$$.
+* Anything that leaks out of a cell $$C_y$$ gets inside the other cell $$C_z$$ :
+  $$in_X(t,C_z) = out_X(t,C_y)$$
+* The variation of quantity in a cell $$C_y$$ is the difference between the quantity
+  that leaked in and the quantity that leaked out :
+  $$[X](t+dT,C_y) - [X](t,C_y) = in_X(t,C_y) - out_X(t,C_y)$$
+  for $$y=1$$ and $$y=2$$
+
+By rearranging these equations, we get the following update rule for diffusion :
+
+<p>
+$$[X](t+dT,C_y) = [X](t,C_y) + \tau_X * [X](t,C_z) * dT - \tau_X * [X](t,C_y)) * dT $$
+$$[X](t+dT,C_y) = (1-\tau_X * dT) * [X](t,C_y) + \tau_X * dT * [X](t,C_z)$$
+</p>
+
+with $$(y,z) = (1,2)$$ or $$(y,z) = (2,1)$$.
+
+This update rule can be generalized from a two-cell system to the 2D grid by
+replacing $$[X](t,C_z)$$ by a (possibly weighted) average of the concentrations
+in the neighbor cells.
 
 ### Visual representation of the system
 
