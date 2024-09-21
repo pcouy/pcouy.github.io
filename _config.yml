@@ -8,7 +8,7 @@ plugins:
   - jemoji
 
 permalink: /:slugified_categories/:year/:month/:title:output_ext
-excerpt_separator: "#"
+excerpt_separator: "##"
 
 url: https://pierre-couy.dev
 title: Pierre Couy's tech corner
