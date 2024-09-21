@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Mitosis in the Gray-Scott model : an introduction to writing shader-based chemical simulations"
+title:  "Mitosis in the Gray-Scott model : writing shader-based chemical simulations"
 tags:
   - shader
   - simulation
