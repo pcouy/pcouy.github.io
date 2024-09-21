@@ -38,12 +38,17 @@ nav
   background: darken($background, 4%)
   z-index: 10
   a
-    margin: 5px
+    margin: 5px 0.5rem
     color: lighten($blue, 10%)
     &:hover
       color: $cyan
+      svg
+        fill: $cyan
     &.active
       color: $color1-alt
+    svg
+      height: 1rem
+      fill: lighten($blue, 10%)
   & ul
     list-style: none
     padding: 0
