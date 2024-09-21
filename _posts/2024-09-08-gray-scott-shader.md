@@ -699,6 +699,11 @@ Taking inspiration from the implementation I wrote for the Gray-Scott model, it
 should be possible to run a rudimentary version of other continuous cellular
 automata.
 
+**Update :** You can take a look at [Slackermanz's blog
+post](https://slackermanz.com/understanding-multiple-neighborhood-cellular-automata/)
+and [Shadertoy profile](https://www.shadertoy.com/user/SlackermanzCA) for a
+similar shader-based implementation of such continuous cellular automata.
+
 ## Conclusion
 
 Although this can be considered an unorthodox use of shaders, this has been a
