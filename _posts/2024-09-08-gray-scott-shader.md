@@ -19,7 +19,9 @@ By simulating a small chemical system that involves only a few components and
 reactions, complex and mesmerizing patterns appear.
 
 <iframe
-src="https://www.shadertoy.com/embed/lXXcz7?gui=true&t=0&paused=false&muted=false"
+    srcdoc="<div style=&quot;position:absolute;top:33%;color:white;&quot;>Please be patient as shadertoy is overloaded sometimes. While you wait for shadertoy to load, you can watch the video <a target=&quot;_parent&quot; href=&quot;{{ site.url }}{{ page.url }}#interesting-emergent-behaviors&quot;> at the end of the article</a></div>"
+    onload="this.removeAttribute('srcdoc')"
+    src="https://www.shadertoy.com/embed/lXXcz7?gui=true&t=0&paused=false&muted=false"
 width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 
 You can interact with the simulation above by clicking on it to drop some green
