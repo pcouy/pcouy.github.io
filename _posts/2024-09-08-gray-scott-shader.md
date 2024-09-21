@@ -323,7 +323,7 @@ update rules for the simulation.
 
 #### Reactions
 
-In the general case, when simulating the reaction $$A + 2B \rightarrow C$$ for a single time step, the
+In the general case, when simulating the reaction $$A + 2B \rightarrow 4C$$ for a single time step, the
 concentrations of $$A$$, $$B$$ and $$C$$ need to be updated in the following way
 for every $$(x,y)$$ cell in the simulation :
 
