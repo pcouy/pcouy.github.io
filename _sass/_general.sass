@@ -67,9 +67,11 @@ nav
           display: list-item
       &:hover > ul
         display: block
+        z-index: 2
         position: absolute
         left: 0
-        margin-top: 0
+        margin-top: -1px
+        margin-left: 0.5rem
         padding: 0.2lh
         border: 1px solid black
         width: max-content
@@ -134,6 +136,14 @@ code.language-plaintext
   ol
     padding-left: 1rem
 
+@media (min-width: 768px)
+  #menu_main
+    display: block
+    & > li
+      display: inline
+  #menu_mobile
+    display: none
+
 @media (max-width: 768px)
   .site-container
     width: 95vw
@@ -147,3 +157,8 @@ code.language-plaintext
     padding: 1rem
     padding-left: 2rem
     margin: 1rem
+  nav
+    #menu_main
+      display: none
+    &:hover > #menu_main
+      display: block

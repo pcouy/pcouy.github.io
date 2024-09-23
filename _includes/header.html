@@ -1,5 +1,6 @@
 <nav>
-    <ul>
+    <ul><li><a id="menu_mobile" href="#menu_main">Menu</a></li></ul>
+    <ul id="menu_main">
         {% for item in site.data.navigation %}
             <li>
                 <a href="{{ item.link }}" {% if page.url == item.link %}class="active"{% endif %}>
