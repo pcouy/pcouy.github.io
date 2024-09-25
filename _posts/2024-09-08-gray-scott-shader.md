@@ -468,6 +468,16 @@ units) to `uv` (coordinates between 0 and 1). It then samples `iChannel0` at the
 channel by `2.0`, which will make it easier to visually interpret the
 simulation.
 
+**Update :** I've been playing with different ways to map the contents of the
+concentrations of reactants to colors. I'm really happy with a color-scheme
+based on the [Hue-Saturation-Value
+(HSV)](https://en.wikipedia.org/wiki/HSL_and_HSV) color representation. It is a
+lot more complex and uses some "magic numbers" to make the result look nice.
+Since this new color scheme lets us see new details, specifically at the border of
+"cells" and around them, I've updated the code on Shadertoy to use it. Red and
+green still respectively represent "only food" and "only catalyst", but hues
+from cyan to purple represent intermediate mixes of the two reactants.
+
 ### Simulation shader
 
 This shader will repeatedly apply the update rules to every pixel in the
