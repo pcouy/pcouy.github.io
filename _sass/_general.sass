@@ -1,3 +1,7 @@
+@use 'colors-solarized' as *
+@use 'colors' as *
+@use 'sass:color'
+
 body
   background-color: $background
   color: $color1
@@ -26,10 +30,10 @@ h1, h2, h3, h4
   text-align: left
 
 a
-  color: lighten($color2, 20%)
+  color: color.adjust($color2, $lightness: 20%)
   svg
     height: 1em
-    fill: lighten($color2, 20%)
+    fill: color.adjust($color2, $lightness: 20%)
 
 a:hover
   color: $color2-alt
@@ -42,11 +46,11 @@ nav
   left: 0
   border-bottom: 3px solid black
   width: 100vw
-  background: darken($background, 4%)
+  background: color.adjust($background, $lightness: -4%)
   z-index: 10
   a
     margin: 5px 0.5rem
-    color: lighten($blue, 10%)
+    color: color.adjust($blue, $lightness: 10%)
     &:hover
       color: $cyan
       svg
@@ -55,7 +59,7 @@ nav
       color: $color1-alt
     svg
       height: 1rem
-      fill: lighten($blue, 10%)
+      fill: color.adjust($blue, $lightness: 10%)
   & ul
     list-style: none
     padding: 0
@@ -79,7 +83,7 @@ nav
         padding: 0.2lh
         border: 1px solid black
         width: max-content
-        background-color: darken($background, 3%)
+        background-color: color.adjust($background, $lightness: 3%)
 
 img
   max-width: 100%
@@ -102,6 +106,9 @@ figure.highlight, div.highlight
     hyphens: none
     text-indent: -2ch each-line
     padding-left: 2ch
+
+legend
+  font-size: 1rem
 
 .post-details
   margin: 5px
@@ -132,7 +139,7 @@ ul.post-list
 
 .link_tag
   display: inline-block
-  border: 1px solid lighten($blue, 10%)
+  border: 1px solid color.adjust($blue, $lightness: 10%)
   border-radius: 0.3rem
   padding: 0.2rem
   font-size: 0.7rem
@@ -144,7 +151,7 @@ code.language-plaintext
   background-color: rgba(128,128,128,0.2)
 
 #markdown-toc
-  border: 1px solid lighten($color2, 20%)
+  border: 1px solid color.adjust($color2, $lightness: 20%)
   padding: 2rem
   padding-left: 4rem
   width: fit-content
