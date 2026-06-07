@@ -26,3 +26,6 @@ collections:
     sort_by: order
     output: true
     layout: post.html
+
+exclude:
+  - jekyll.log
