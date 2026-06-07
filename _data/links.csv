@@ -1,44 +1,66 @@
-url,title,tag_slugs
-https://jwiegley.github.io/git-from-the-bottom-up/,Git from the Bottom Up,"git,learning"
-https://webvm.io/,WebVM - Linux virtualization in WebAssembly,"webasm,awesome"
-https://www.youtube.com/oembed?format=xml&url=https://www.youtube.com/watch?v=QS4fzElm8zk,WiFi Game Boy Cartridge,"lowlevel,tinkering"
-https://www.3blue1brown.com/,3Blue1Brown,"teaching,math,learning"
-https://ncase.me/trust/,trust,"learning,game-theory"
-http://dbp-consulting.com/tutorials/debugging/linuxProgramStartup.html,linuxProgramStartup.html,"linux,learning,lowlevel"
-https://fourcore.io/blogs/bring-your-own-vulnerable-driver-attack,Exploit Party: Bring Your Own Vulnerable Driver Attacks - FourCore,"security,lowlevel"
-https://austinhenley.com/blog/challengingalgorithms.html,Challenging algorithms and data structures every programmer should try,"dev,learning"
-https://engineering.atspotify.com/2014/02/how-to-shuffle-songs/,How to shuffle songs? - Spotify Engineering,"dev,story"
-https://portswigger.net/research/stealing-passwords-from-infosec-mastodon-without-bypassing-csp,Stealing passwords from infosec Mastodon - without bypassing CSP,"security,web"
-https://simonwillison.net/2022/Oct/29/the-perfect-commit/,The Perfect Commit,"git,dev,best-practices"
-https://github.com/kirjavascript/quine-howto,GitHub - kirjavascript/quine-howto: how to write lots of quines,"fun,dev"
-https://ohshitgit.com/,"Oh Shit, Git!?!","git,teaching,learning"
-https://luzkan.github.io/smells/,Code Smells Catalog,"best-practices,dev"
-https://portswigger.net/research/browser-powered-desync-attacks,Browser-Powered Desync Attacks: A New Frontier in HTTP Request Smuggling,"exploit,security,web,vulnerability"
-https://documentation.divio.com/,Documentation System,dev
-https://dmitry.gr/?r=05.Projects&proj=33.%20LinuxCard,LinuxCard - Dmitry.GR,lowlevel
-https://github.blog/2022-06-30-write-better-commits-build-better-projects/,"Write Better Commits, Build Better Projects | The GitHub Blog","learning,git"
-https://www.hertzbleed.com/,Hertzbleed Attack,"side-channel,security"
-https://daniel.haxx.se/blog/2022/05/12/a-tale-of-a-trailing-dot/,A tale of a trailing dot,"dev,story,lowlevel"
-https://hoten.cc/blog/porting-zelda-classic-to-the-web/,Porting Zelda Classic to the Web,"web,write-up,wasm,dev,gamedev,awesome"
-https://ohmygit.org/,Oh My Git!,"teaching,git"
-https://dustri.org/b/horrible-edge-cases-to-consider-when-dealing-with-music.html,Horrible edge cases to consider when dealing with music,dev
-https://bishopfox.com/blog/unredacter-tool-never-pixelation,Never Use Text Pixelation To Redact Sensitive Information,security
-https://www.datadoghq.com/blog/engineering/dirty-pipe-container-escape-poc/,Using the Dirty Pipe Vulnerability to Break Out from Containers,security
-https://thehackernews.com/2022/03/new-browser-in-browser-bitb-attack.html,New Browser-in-the Browser (BITB) Attack Makes Phishing Nearly Undetectable,"web,security"
-https://github.com/ossu/computer-science,GitHub - ossu/computer-science: Path to a free self-taught education in Computer Science!,teaching
-https://github.com/danistefanovic/build-your-own-x,GitHub - danistefanovic/build-your-own-x: 🤓 Build your own (insert technology here),teaching
-http://colinm.org/sigbovik/,sigbovik,"dev,toy"
-https://github.com/ManimCommunity/manim/blob/main/README.md,manim/README.md at main · ManimCommunity/manim,teaching
-https://www.youtube.com/oembed?format=xml&url=https://www.youtube.com/watch?v=uWZu3rnj-kQ,Building an AI Dog Poop Detector for my Backyard,"robotics,ai"
-https://blog.upperlinecode.com/what-if-answer-keys-are-bad-computer-science-teacher/,What If Answer Keys Are Bad? - Upperline Code,teaching
-https://googleprojectzero.blogspot.com/2021/12/a-deep-dive-into-nso-zero-click.html,A deep dive into an NSO zero-click iMessage exploit: Remote Code Execution,security
-https://calpaterson.com/bank-python.html&mkt_tok=MTA3LUZNUy0wNzAAAAGA2x597x706_jpj_dfLoTer2j_lb7p7OBPqK-oS8pvtoOSr7OU6hpjs-qAaB-0rd4HE4RIsy286eNTnKU-5dHMt-myUCU2ZFTXBPleVsfRtwVNgg,An oral history of Bank Python,"python,story,dev"
-https://github.com/labmlai/annotated_deep_learning_paper_implementations,"GitHub - labmlai/annotated_deep_learning_paper_implementations: 🧑‍🏫 50! Implementations/tutorials of deep learning papers with side-by-side notes 📝; including transformers (original, xl, switch, feedback, vit, ...), optimizers (adam, adabelief, ...), gans(cyclegan, stylegan2, ...), 🎮 reinforcement learning (ppo, dqn), capsnet, distillation, ... 🧠","ai,learning"
-http://worrydream.com/ExplorableExplanations/,Explorable Explanations,teaching
-https://explorabl.es,Explorable Explanations,"learning,teaching"
-https://missing.csail.mit.edu/,The Missing Semester of Your CS Education,"dev,teaching"
-https://blog.jupyter.org/and-voilà-f6a2c08a4a93?gi=d8af14de3c31,And voilà!,"dev,ai,dataviz"
-https://certitude.consulting/blog/en/invisible-backdoor/,The Invisible JavaScript Backdoor,"web,security"
-https://vega.github.io/vega/,A Visualization Grammar,dataviz
-https://github.com/ArchiveBox/ArchiveBox/wiki/Web-Archiving-Community,Web Archiving Community,"datahoarding,archiving,homeserver"
-https://wiki.archlinux.org/index.php/security#CPU,Security - ArchWiki,"security,homeserver,linux"
+url,title,date,tag_slugs
+https://drewdevault.com/blog/Circus-freaks-of-FOSS/,The circus freaks of open source,2026-06-07,mental-health
+https://github.com/becarpenter/book6/blob/main/01.%20Introduction%20and%20Foreword%2FWhy%20IPv6%20is%20so%20complicated.md,book6/01. Introduction and Foreword/Why IPv6 is so complicated.md at main · becarpenter/book6,2026-05-25,"networking,ipv6"
+https://chrisdown.name/2026/03/24/zswap-vs-zram-when-to-use-what.html,Debunking zswap and zram myths,2026-03-24,"linux,learning"
+https://www.cyera.com/research-labs/ni8mare-unauthenticated-remote-code-execution-in-n8n-cve-2026-21858,Ni8mare  -  Unauthenticated Remote Code Execution in n8n (CVE-2026-21858) | Cyera Research Labs,2026-01-08,"security,vulnerability"
+https://lyra.horse/blog/2025/08/you-dont-need-js/,You no longer need JavaScript,2025-08-28,"front,web"
+https://bobdahacker.com/blog/monster-energy,I Hacked Monster Energy and You Won't Believe What They Think You Look Like,2025-08-23,"writeup,security"
+https://blog.jsbarretto.com/post/software-is-joy,Writing Toy Software Is A Joy,2025-06-22,"dev,blog"
+https://scribe.rip/@karstenbiedermann/goodbye-sass-welcome-back-native-css-b3beb096d2b4?ref=dailydev,"Goodbye SASS 👋, welcome back native CSS",2025-01-08,"css,web,learning"
+https://arstechnica.com/information-technology/2024/12/new-badram-attack-neuters-security-assurances-in-amd-epyc-processors/,AMD’s trusted execution environment blown wide open by new BadRAM attack,2024-12-10,"lowlevel,security"
+https://unit42.paloaltonetworks.com/unique-popular-techniques-lateral-movement-macos/,Lateral Movement on macOS: Unique and Popular Techniques and In-the-Wild Examples,2024-11-22,"macos,security"
+https://lazamar.github.io/virtual-dom/,A virtual DOM in 200 lines of JavaScript,2024-11-17,"js,learning"
+https://www.3blue1brown.com/,3Blue1Brown,2024-09-23,"math,teaching,learning"
+http://dbp-consulting.com/tutorials/debugging/linuxProgramStartup.html,linuxProgramStartup.html,2024-09-23,"lowlevel,linux,learning"
+https://www.youtube.com/oembed?format=xml&url=https://www.youtube.com/watch?v=QS4fzElm8zk,WiFi Game Boy Cartridge,2024-09-23,"lowlevel,tinkering"
+https://jwiegley.github.io/git-from-the-bottom-up/,Git from the Bottom Up,2024-09-23,"git,learning"
+https://ncase.me/trust/,trust,2024-09-23,"learning,game-theory"
+https://webvm.io/,WebVM - Linux virtualization in WebAssembly,2024-09-23,"webasm,awesome"
+https://www.theguardian.com/environment/article/2024/aug/09/what-lies-beneath-the-growing-threat-to-the-hidden-network-of-cables-that-power-the-internet,What lies beneath: the growing threat to the hidden network of cables that power the internet,2024-08-08,news
+https://ffoodd.github.io/chaarts/index.html,chaarts,2024-08-02,"web,dev,dataviz,awesome"
+http://tom7.org/mario/,A general technique for automating NES games,2023-10-11,"reinforcement-learning,ai"
+https://www.mobileread.com/forums/showthread.php?t=296673,Debian on H2O Aura tutorial,2023-08-26,"ereader,kobo,linux"
+https://torrentfreak.com/youtube-dl-hosting-ban-paves-the-way-to-privatized-censorship-230411/,‘Youtube-dl Hosting Ban Paves the Way to Privatized Censorship’ * TorrentFreak,2023-04-13,"news,open-source,archiving"
+https://decoded.avast.io/janvojtesek/dota-2-under-attack-how-a-v8-bug-was-exploited-in-the-game/,Dota 2 Under Attack: How a V8 Bug Was Exploited in the Game - Avast Threat Labs,2023-02-08,security
+https://fourcore.io/blogs/bring-your-own-vulnerable-driver-attack,Exploit Party: Bring Your Own Vulnerable Driver Attacks - FourCore,2023-01-08,"security,lowlevel"
+https://austinhenley.com/blog/challengingalgorithms.html,Challenging algorithms and data structures every programmer should try,2022-12-22,"learning,dev"
+https://portswigger.net/research/stealing-passwords-from-infosec-mastodon-without-bypassing-csp,Stealing passwords from infosec Mastodon - without bypassing CSP,2022-11-15,"security,web"
+https://simonwillison.net/2022/Oct/29/the-perfect-commit/,The Perfect Commit,2022-10-31,"dev,best-practices,git"
+https://github.com/kirjavascript/quine-howto,GitHub - kirjavascript/quine-howto: how to write lots of quines,2022-09-29,"fun,dev"
+https://ohshitgit.com/,"Oh Shit, Git!?!",2022-09-02,"git,learning,teaching"
+https://luzkan.github.io/smells/,Code Smells Catalog,2022-08-16,"dev,best-practices"
+https://portswigger.net/research/browser-powered-desync-attacks,Browser-Powered Desync Attacks: A New Frontier in HTTP Request Smuggling,2022-08-10,"security,web,vulnerability,exploit"
+https://documentation.divio.com/,Documentation System,2022-08-02,dev
+https://dmitry.gr/?r=05.Projects&proj=33.%20LinuxCard,LinuxCard - Dmitry.GR,2022-07-14,lowlevel
+https://github.blog/2022-06-30-write-better-commits-build-better-projects/,"Write Better Commits, Build Better Projects | The GitHub Blog",2022-06-30,"git,learning"
+https://www.hertzbleed.com/,Hertzbleed Attack,2022-06-15,"side-channel,security"
+https://daniel.haxx.se/blog/2022/05/12/a-tale-of-a-trailing-dot/,A tale of a trailing dot,2022-05-12,"story,lowlevel,dev"
+https://hoten.cc/blog/porting-zelda-classic-to-the-web/,Porting Zelda Classic to the Web,2022-05-04,"write-up,web,gamedev,dev,wasm,awesome"
+https://ohmygit.org/,Oh My Git!,2022-04-20,"teaching,git"
+https://dustri.org/b/horrible-edge-cases-to-consider-when-dealing-with-music.html,Horrible edge cases to consider when dealing with music,2022-04-03,dev
+https://bishopfox.com/blog/unredacter-tool-never-pixelation,Never Use Text Pixelation To Redact Sensitive Information,2022-03-26,security
+https://www.datadoghq.com/blog/engineering/dirty-pipe-container-escape-poc/,Using the Dirty Pipe Vulnerability to Break Out from Containers,2022-03-25,security
+https://thehackernews.com/2022/03/new-browser-in-browser-bitb-attack.html,New Browser-in-the Browser (BITB) Attack Makes Phishing Nearly Undetectable,2022-03-23,"security,web"
+https://web.archive.org/web/20240728031727/https://www.terluinwebdesign.nl/en/blog/incoming-20-new-css-viewport-units-svh-lvh-dvh-svw-lvw-dvw/,"Incoming: 20 new CSS viewport units: svh, lvh, dvh, svw, lvw, dvw, ...",2022-03-04,"learning,web,front,css"
+https://github.com/ossu/computer-science,GitHub - ossu/computer-science: Path to a free self-taught education in Computer Science!,2022-02-09,teaching
+https://github.com/danistefanovic/build-your-own-x,GitHub - danistefanovic/build-your-own-x: 🤓 Build your own (insert technology here),2022-02-08,teaching
+http://colinm.org/sigbovik/,sigbovik,2022-01-25,"dev,toy"
+https://github.com/ManimCommunity/manim/blob/main/README.md,manim/README.md at main · ManimCommunity/manim,2022-01-17,teaching
+https://www.youtube.com/oembed?format=xml&url=https://www.youtube.com/watch?v=uWZu3rnj-kQ,Building an AI Dog Poop Detector for my Backyard,2022-01-15,"robotics,ai"
+https://www.youtube.com/oembed?format=xml&url=https://www.youtube.com/watch?v=QS4fzElm8zk,WiFi Game Boy Cartridge,2021-12-27,"tinkering,video"
+https://blog.upperlinecode.com/what-if-answer-keys-are-bad-computer-science-teacher/,What If Answer Keys Are Bad? - Upperline Code,2021-12-21,teaching
+https://googleprojectzero.blogspot.com/2021/12/a-deep-dive-into-nso-zero-click.html,A deep dive into an NSO zero-click iMessage exploit: Remote Code Execution,2021-12-15,security
+https://github.com/labmlai/annotated_deep_learning_paper_implementations,"GitHub - labmlai/annotated_deep_learning_paper_implementations: 🧑‍🏫 50! Implementations/tutorials of deep learning papers with side-by-side notes 📝; including transformers (original, xl, switch, feedback, vit, ...), optimizers (adam, adabelief, ...), gans(cyclegan, stylegan2, ...), 🎮 reinforcement learning (ppo, dqn), capsnet, distillation, ... 🧠",2021-12-05,"ai,learning"
+https://explorabl.es,Explorable Explanations,2021-11-28,"learning,teaching"
+http://worrydream.com/ExplorableExplanations/,Explorable Explanations,2021-11-28,teaching
+https://missing.csail.mit.edu/,The Missing Semester of Your CS Education,2021-11-26,"dev,teaching"
+https://certitude.consulting/blog/en/invisible-backdoor/,The Invisible JavaScript Backdoor,2021-11-11,"security,web"
+https://calpaterson.com/bank-python.html&mkt_tok=MTA3LUZNUy0wNzAAAAGA2x597x706_jpj_dfLoTer2j_lb7p7OBPqK-oS8pvtoOSr7OU6hpjs-qAaB-0rd4HE4RIsy286eNTnKU-5dHMt-myUCU2ZFTXBPleVsfRtwVNgg,An oral history of Bank Python,2021-11-04,"dev,story,python"
+https://vega.github.io/vega/,A Visualization Grammar,2021-09-19,dataviz
+https://codeinthehole.com/tips/vim-lists/,Vim's useful lists,2021-05-04,"cheat-sheet,vim"
+https://github.com/ArchiveBox/ArchiveBox/wiki/Web-Archiving-Community,Web Archiving Community,2021-04-19,"archiving,datahoarding,homeserver"
+https://wiki.archlinux.org/index.php/security#CPU,Security - ArchWiki,2021-04-18,"security,linux,homeserver"
+https://blog.jupyter.org/and-voilà-f6a2c08a4a93?gi=d8af14de3c31,And voilà!,2021-01-08,"dataviz,dev,ai"
+https://emnudge.dev/blog/to-semicolon-or-not-to-semicolon/,"To Semicolon, Or Not To Semicolon;",2019-08-15,"js,learning"
+https://engineering.atspotify.com/2014/02/how-to-shuffle-songs/,How to shuffle songs? - Spotify Engineering,2014-02-28,"dev,story"
+https://poppopret.org/2013/12/18/reverse-engineering-a-furby/#eeprom,Reverse Engineering a Furby,2013-12-18,"furby,fun,reverse-engineering"
