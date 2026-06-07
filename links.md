@@ -3,6 +3,8 @@ layout: default
 title: Links / Resources directory
 ---
 
+<script defer src="/assets/links.js"></script>
+
 This a growing directory of links I have found useful or interesting. You will mainly find
 blog-posts, git repositories, security write-ups, scientific papers and learning resources.
 
@@ -46,13 +48,17 @@ docker compose cp postgres:/var/lib/postgresql/shared_links.csv .
 </details>
 </div>
 
+## Filter by tag
+
+<form class="tags-filter" data-target="#shared-links"></form>
+
 ## List
 
-<ul>
+<ul id="shared-links">
 {% for link in site.data.links %}
-<li data-tags="{{ tags }}">
-<a href="{{ link.url }}">{{ link.title }}</a> ({{ link.date }})
 {% assign tags = link.tag_slugs| split: ',' %}
+<li data-tags="{{ tags | join: "," }}">
+<a href="{{ link.url }}">{{ link.title }}</a> ({{ link.date }})
 {% for tag in tags %}
 <span class="link_tag">{{tag}}</span>
 {% endfor %}
